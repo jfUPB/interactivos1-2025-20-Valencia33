@@ -42,3 +42,8 @@ Los outputs de este programa sería tanto los LEDs del microbit como el circulit
 
 El proceso empieza una vez se corre el prgrama en el microbit donde muestra la imagen de la mariposa, posteriormente está chequeando el input de los botones A, B, C y el acelerometro, que van directamente a la pantalla de LEDs.
 Además tambien esta conectado en p5.js donde se crea el canva y se maneja el input del botón creado en ese mismo canva, que si es precionado le manda por el serial al microbit, que lo detecta como otro input. Y a su vez tambien actualiza el canva.
+
+♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️
+
+### 🐟 Actividad 4 🐟
+
