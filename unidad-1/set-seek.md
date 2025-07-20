@@ -60,39 +60,47 @@ let moonSpeed;
 function setup() {
   createCanvas(800, 800);
   colores = {c1:random(100,255),c2:random(100,255),c3:random(100,255),c4:random(50,255),c5:random(10,200)}
-  e = random(170,200);
+  e = random(150,200);
   moonSpeed = random(0.02,0.05)
 }
 
 function draw() {
-  background('rgba(10, 10, 50, 0.10)');
+  background('rgba(10, 10, 50, 0.1)');
   noStroke();
   
+  text(int(frameCount/120) + " años",10,20)
+  
   //★
+  drawingContext.shadowBlur = 10;
+  drawingContext.shadowColor = color(255,255,50)
   let x4 = 400 + cos(frameCount*0.02)*4;
-  let y4 = 400 + sin(frameCount*0.02)*4;
-  fill(255,255,0);
+  let y4 = 400 + sin(frameCount*0.02)*2;
+  fill(255,255,50);
   circle(x4,y4,30);
+  drawingContext.shadowBlur = 0;
   
   //●
   let x = 400 + cos(frameCount*0.05)*80;
-  let y = 400 + sin(frameCount*0.05)*80;
+  let y = 400 + sin(frameCount*0.05)*60;
   fill(colores.c5,255,colores.c3);
-  circle(x,y,10);
+  circle(x,y,12);
   
   let x2 = 400 + cos(frameCount*0.1)*40;
-  let y2 = 400 + sin(frameCount*0.1)*40;
+  let y2 = 400 + sin(frameCount*0.1)*30;
   fill(colores.c2,colores.c3,colores.c1);
-  circle(x2,y2,10);
+  circle(x2,y2,7);
   
-  let x3 = 400 + cos(frameCount*0.02)*160;
-  let y3 = 400 + sin(frameCount*0.02)*160;  
+  let x3 = 400 + cos(frameCount*0.02)*200;
+  let y3 = 400 + sin(frameCount*0.02)*120;  
   fill(colores.c3,colores.c4,colores.c2);
-  circle(x3,y3,25);
+  circle(x3,y3,20);
   
   //☄
-  let x5 = 470 + cos(frameCount*(e/10000))*e;
-  let y5 = 400 + sin(frameCount*(e/10000))*70;  
+  
+  let c = sqrt((e*e)-(70*70))
+  
+  let x5 = (400 +(e-60)) + cos(frameCount*(e/10000))*e;
+  let y5 = 400 + sin(frameCount*(e/10000))*50;  
   fill(colores.c5,colores.c4,colores.c1);
   circle(x5,y5,5);
   
@@ -105,16 +113,24 @@ function draw() {
   
   //⋆⁺₊⋆⋆⁺₊⋆⋆⁺₊⋆⋆⁺₊⋆⋆⁺₊⋆
   
-  let x9 = cos(frameCount*0.02)*120;
-  let y9 = sin(frameCount*0.02)*120;  
+  let x9 = cos(frameCount*0.02)*170;
+  let y9 = sin(frameCount*0.02)*100;  
   translate(x9,y9)
   let x7 = cos(frameCount*(random(100,200)))*30;
   let y7 = sin(frameCount*(random(100,200)))*30;  
   fill(colores.c5,colores.c2,colores.c1);
   circle(x7,y7,5);
 }
+
+function keyPressed() {
+  if (key === 's') {
+    saveGif('sistema solar', 30);
+}
+}
+}
 ```
 ##### __GIF:__
 
-![sistema solar](https://github.com/user-attachments/assets/5405b1e4-b787-4b12-8fed-d3fb49684e70)
+![sistema solar(2)](https://github.com/user-attachments/assets/f02e66c9-bc0e-47e4-a4bc-47851ee186cd)
+
 
