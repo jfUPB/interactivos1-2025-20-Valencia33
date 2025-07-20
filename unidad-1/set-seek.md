@@ -49,6 +49,8 @@ Además tambien esta conectado en p5.js donde se crea el canva y se maneja el in
 
 Aquí está [mi programa.](https://editor.p5js.org/Valencia33/sketches/hzRt0JF7i)
 
+En este programa utilicé cos() y sen() para hacer las orbitas de todos los planetas, esto junto con random() para modificar parametros tanto de la velocidad con la que giran, como sus colores y la excentricidad del cometa. También intenté hacer un cinturón de asteroides pero quedó más como un radar, igual me gustó entonces lo dejé así.
+
 Este es el código:
 ```javascript
 var colores = [];
