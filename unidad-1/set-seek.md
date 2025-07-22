@@ -51,47 +51,88 @@ Aquí está [mi programa.](https://editor.p5js.org/Valencia33/sketches/hzRt0JF7i
 
 En este programa utilicé cos() y sen() para hacer las orbitas de todos los planetas, esto junto con random() para modificar parametros tanto de la velocidad con la que giran, como sus colores y la excentricidad del cometa. También intenté hacer un cinturón de asteroides pero quedó más como un radar, igual me gustó entonces lo dejé así.
 
+Además tambien utilizo mouseX y mouseY para controlar la "perspectiva" y el tiempo. 
+
 Este es el código:
 ```javascript
 var colores = [];
 let e;
 let moonSpeed;
+let s;
+let m;
 
-function setup() {
+function setup() 
+{
   createCanvas(800, 800);
-  colores = {c1:random(100,255),c2:random(100,255),c3:random(100,255),c4:random(50,255),c5:random(10,200)}
+  colores = {c1:random(150,255),c2:random(150,255),c3:random(150,255),c4:random(50,255),c5:random(10,200)}
   e = random(150,200);
   moonSpeed = random(0.02,0.05)
 }
 
-function draw() {
-  background('rgba(10, 10, 50, 0.1)');
+function draw() 
+{
+  background('rgba(0, 10, 60, 0.4)');
   noStroke();
   
-  text(int(frameCount/120) + " años",10,20)
+  if(mouseX > 0 && mouseX < width && mouseY > 0 && mouseY < height)
+    {
+      s = (mouseY/200)*0.5+0.5
+    }
+  else
+    {
+      s=1;
+    }
+  
+  m = (mouseX/400)+0.75
+  
+  fill(colores.c5,255,colores.c3)
+  textAlign(CENTER)
+  textSize(29)
+  textFont('Comic Sans MS')
+  text(int(s*(frameCount/120)) + " AÑOS",70,40)
+  
+  //son usadas antes de dibujar los planetas
+  let x3 = 400 + cos(frameCount*0.02*s)*200;
+  let y3 = 400 + sin(frameCount*0.02*s)*(150/m);    
+  
+  //ellipse
+  fill(0,0)
+  stroke(255,255,255, 30)
+  strokeWeight(1)
+  setLineDash([3, 3]);
+  
+  ellipse(400,400,80,60/m)
+  ellipse(400,400,160,120/m)
+  ellipse(400,400,400,300/m)
+  ellipse(x3,y3,60,60/m)
+  ellipse((400 +(e-60)) ,400,2*e,2*(50/m))
+  
+  noStroke();
   
   //★
   drawingContext.shadowBlur = 10;
   drawingContext.shadowColor = color(255,255,50)
-  let x4 = 400 + cos(frameCount*0.02)*4;
-  let y4 = 400 + sin(frameCount*0.02)*2;
+  let x4 = 400 + cos(frameCount*0.02*s)*4;
+  let y4 = 400 + sin(frameCount*0.02*s)*2;
   fill(255,255,50);
   circle(x4,y4,30);
-  drawingContext.shadowBlur = 0;
+  
+  
+  drawingContext.shadowBlur = 4;
+  drawingContext.shadowColor = color(255,255,255,70)
   
   //●
-  let x = 400 + cos(frameCount*0.05)*80;
-  let y = 400 + sin(frameCount*0.05)*60;
+  let x = 400 + cos(frameCount*0.05*s)*80;
+  let y = 400 + sin(frameCount*0.05*s)*(60/m);
   fill(colores.c5,255,colores.c3);
   circle(x,y,12);
   
-  let x2 = 400 + cos(frameCount*0.1)*40;
-  let y2 = 400 + sin(frameCount*0.1)*30;
+  let x2 = 400 + cos(frameCount*0.1*s)*40;
+  let y2 = 400 + sin(frameCount*0.1*s)*(30/m);
   fill(colores.c2,colores.c3,colores.c1);
   circle(x2,y2,7);
   
-  let x3 = 400 + cos(frameCount*0.02)*200;
-  let y3 = 400 + sin(frameCount*0.02)*120;  
+  
   fill(colores.c3,colores.c4,colores.c2);
   circle(x3,y3,20);
   
@@ -99,38 +140,50 @@ function draw() {
   
   let c = sqrt((e*e)-(70*70))
   
-  let x5 = (400 +(e-60)) + cos(frameCount*(e/10000))*e;
-  let y5 = 400 + sin(frameCount*(e/10000))*50;  
-  fill(colores.c5,colores.c4,colores.c1);
+  let x5 = (400 +(e-60)) + cos(frameCount*(e/10000)*s)*e;
+  let y5 = 400 + sin(frameCount*(e/10000)*s)*(50/m);  
+  fill(0,152,255);
   circle(x5,y5,5);
   
   //⏾
   translate(x3,y3)
-  let x6 = cos(frameCount*(moonSpeed))*30;
-  let y6 = sin(frameCount*(moonSpeed))*30;  
+  let x6 = cos(frameCount*(moonSpeed)*s)*30;
+  let y6 = sin(frameCount*(moonSpeed)*s)*(30/m);  
   fill(255,colores.c2,colores.c1);
   circle(x6,y6,5);
   
-  //⋆⁺₊⋆⋆⁺₊⋆⋆⁺₊⋆⋆⁺₊⋆⋆⁺₊⋆
+  drawingContext.shadowBlur = 0;
   
-  let x9 = cos(frameCount*0.02)*170;
-  let y9 = sin(frameCount*0.02)*100;  
+  //⋆⁺₊⋆⋆⁺₊⋆⋆⁺₊⋆⋆⁺₊⋆⋆⁺₊⋆s
+  
+  let x9 = cos(frameCount*0.02*s)*170;
+  let y9 = sin(frameCount*0.02*s)*(100);  
   translate(x9,y9)
-  let x7 = cos(frameCount*(random(100,200)))*30;
-  let y7 = sin(frameCount*(random(100,200)))*30;  
+  let x7 = cos(frameCount*(random(100,200)*s))*25;
+  let y7 = sin(frameCount*(random(100,200)*s))*25;  
   fill(colores.c5,colores.c2,colores.c1);
   circle(x7,y7,5);
 }
 
-function keyPressed() {
-  if (key === 's') {
-    saveGif('sistema solar', 30);
+function keyPressed() 
+{
+  if (key === 's') 
+  {
+    saveGif('sistema solar', 25);
+  }
 }
+
+function setLineDash(list) 
+{
+  drawingContext.setLineDash(list);
 }
-}
+
+
+
 ```
 ##### __GIF:__
+![sistema solar(4)](https://github.com/user-attachments/assets/f793c771-15ba-4a3a-b1c0-37f9ed907260)
 
-![sistema solar(2)](https://github.com/user-attachments/assets/f02e66c9-bc0e-47e4-a4bc-47851ee186cd)
+
 
 
