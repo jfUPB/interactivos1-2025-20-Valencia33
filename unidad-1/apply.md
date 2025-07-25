@@ -90,18 +90,18 @@ En p5.js se debe de añadir la biblioteca del micro:bit, esta permite utilizar l
 
 - __setup()__
 
- - Aparte de crear el serial para la comunicación, acá tambien se crea un botón que va a estar encargado de abrir o cerrar el serial, sin embargo esto no es completamente responsabilidad del serial, si no que más bien, este botón al ser presionado llama la función __connectBtnClick()__.
+     - Aparte de crear el serial para la comunicación, acá tambien se crea un botón que va a estar encargado de abrir o cerrar el serial, sin embargo esto no es completamente responsabilidad del serial, si no que más bien, este botón al ser presionado llama la función __connectBtnClick()__.
 
 - __draw()__
 
- - Tiene un if que se encarga de limpiar la información del puerto si y solo si la conexión ya ha sido establecida, de tal forma que siempre que se abra el puerto se va a limpiar la información.
- - Tiene otro if que por lo que entiendo mira a ver si hay bytes disponibles para que se pueda leer, en caso de que si los haya entonces lee el puerto 1 (que sería el que recibe la "A" desde python) y mira que información llegó, si dataRx == "A" entonces fill("red") y si dataRx == "N" entonces hace fill("green").
- - Cambia el pivote del rectángulo y lo crea en la mitad de la pantalla, donde su base y altura son iguales.
- - Por último hay un if encargado del feedback para el usuario, pues cambia la información que presenta el botón dependiendo del estado de conexión al serial.
+     - Tiene un if que se encarga de limpiar la información del puerto si y solo si la conexión ya ha sido establecida, de tal forma que siempre que se abra el puerto se va a limpiar la información.
+     - Tiene otro if que por lo que entiendo mira a ver si hay bytes disponibles para que se pueda leer, en caso de que si los haya entonces lee el puerto 1 (que sería el que recibe la "A" desde python) y mira que información llegó, si dataRx == "A" entonces fill("red") y si dataRx == "N" entonces hace fill("green").
+     - Cambia el pivote del rectángulo y lo crea en la mitad de la pantalla, donde su base y altura son iguales.
+     - Por último hay un if encargado del feedback para el usuario, pues cambia la información que presenta el botón dependiendo del estado de conexión al serial.
 
 - __connectBtnClick()__
 
- - Una vez el botón es presionado se llama esta función que chequea si el puerto está abierto: En caso de que no lo esté, lo abre, le indica la velocidad a la que va a recibir la información y pone connectionInialized = false para realizar la limpieza de datos al principio de la próxima iteración de draw(). En caso de que si lo esté, lo cierra.
+     - Una vez el botón es presionado se llama esta función que chequea si el puerto está abierto: En caso de que no lo esté, lo abre, le indica la velocidad a la que va a recibir la información y pone connectionInialized = false para realizar la limpieza de datos al principio de la próxima iteración de draw(). En caso de que si lo esté, lo cierra.
    
 ♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️
 
