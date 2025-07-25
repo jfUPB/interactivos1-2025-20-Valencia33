@@ -4,6 +4,8 @@
 
 ♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️
 
+___
+
 ### 🐟 Actividad 7 🐟
 
 __Parte 1: recuperación de conocimiento__
@@ -29,6 +31,8 @@ __Parte 1: recuperación de conocimiento__
  - desde el editor de python se debe de hacer una referencia a la función que detecta el acerelometro, no se que nombre tendra esa función o que valores devuelva, me imagino que un bool es suficiente. En todo caso, un if que detecte si el acerelometro está siendo activado para despues utilizar uart.write('A'), que va a ser el dato que va a recibir p5.js. Es importante considerar la posibilidad de que el micro:bit no esté siendo agitado, en cuyo caso debería mandar otro dato en vez de A, esto con el fin de que en p5.js, se evite que con solo agitar una vez el color cambie aleatoriamente indefinidamente.
  - desde p5.js se va a abrir el serial y se va a leer el puerto número 1, y cada frame se va a chequear si recibió la "A" que mandó el micro:bit, en caso de que si lo reciba entonces se va a correr la siguiente línea fill(random(0,255),random(0,255),random(0,255)). Se añade un else if para recibir todos los datos que no sean "A" y así dejar de cambiar el color. Se me ocurre que se pueden crear tres variables (r,g,b) que sean un random entre 0 y 255 para de esa forma mantener el último color cuando no esté siendo agitado.
 
+___
+
 __Parte 2: reflexión sobre tu proceso__
 
 1) __¿Qué fue más desafiante para ti en esta unidad: la parte conceptual (entender qué es un sistema físico interactivo) o la parte técnica (hacer que el micro:bit y p5.js se comunicaran)? ¿Por qué?__
@@ -47,3 +51,21 @@ __Parte 2: reflexión sobre tu proceso__
 
  - Pienso que se justifica pero solo por el uso de las bibliotecas adicionales de micro:bit, sin embargo si me parece mejor cuando los ejercicios son autónomos por que dan la posibilidad de explorar más las documentaciones y la oportunidad de equivocarse, que en mi opinión, es una parte fundamental del aprendizaje.
 
+___
+
+
+### 🐟 Actividad 9 🐟
+
+1) __Continuar: ¿Qué actividad, video o ejemplo de esta unidad te resultó más inspirador o te ayudó más a entender el potencial de los sistemas físicos interactivos?__
+
+ - Me gustó bastante el video sobre el logo de la filarmonica de Frankfurt, no tanto por que la visualización me haya parecido super wow, sino mas por las versatilidad que tienen los sistemas físicos interactivos, se pueden aplicar en muchas áreas, incluso en aquella que no requieran un toque artistico.
+
+2) __Dejar de hacer: ¿Hubo alguna parte que te pareció demasiado abstracta, muy rápida o confusa? ¿Hay algo que crees que podríamos cambiar para que sea más claro?__
+
+ - Personalmente la parte física del micro:bit no me quedó tan claro pienso que las partes de este que se explicaron en clase estaban muy centradas en lo que ibamos a hacer, cuando me parece mejor mostrar un producto final que sea impresionante, que demuestre el potencial del micro:bit para incrementar las posibilidades de aprender por cuenta propia.
+
+3) __Empezar a hacer: ¿Qué te genera más curiosidad ahora? ¿Te gustaría explorar más sensores del micro:bit (luz, temperatura), crear visualizaciones más complejas en p5.js o ver más ejemplos de proyectos artísticos?__
+
+ - Me gustaría explorar más en p5.js, me encantó ese programa y seg
+Balance inspiración vs. técnica: ¿Cómo sentiste el equilibrio entre ver los videos inspiradores de la Actividad 01 y la parte técnica de conectar las herramientas en las actividades 03-06?
+Comentario adicional: ¿Hay algo más que quieras compartir sobre tu experiencia en esta unidad introductoria?
