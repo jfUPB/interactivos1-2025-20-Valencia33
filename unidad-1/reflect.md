@@ -5,6 +5,7 @@
 ♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️
 
 ___
+___
 
 ### 🐟 Actividad 7 🐟
 
@@ -52,7 +53,7 @@ __Parte 2: reflexión sobre tu proceso__
  - Pienso que se justifica pero solo por el uso de las bibliotecas adicionales de micro:bit, sin embargo si me parece mejor cuando los ejercicios son autónomos por que dan la posibilidad de explorar más las documentaciones y la oportunidad de equivocarse, que en mi opinión, es una parte fundamental del aprendizaje.
 
 ___
-
+___
 
 ### 🐟 Actividad 9 🐟
 
@@ -66,6 +67,17 @@ ___
 
 3) __Empezar a hacer: ¿Qué te genera más curiosidad ahora? ¿Te gustaría explorar más sensores del micro:bit (luz, temperatura), crear visualizaciones más complejas en p5.js o ver más ejemplos de proyectos artísticos?__
 
- - Me gustaría explorar más en p5.js, me encantó ese programa y seg
-Balance inspiración vs. técnica: ¿Cómo sentiste el equilibrio entre ver los videos inspiradores de la Actividad 01 y la parte técnica de conectar las herramientas en las actividades 03-06?
-Comentario adicional: ¿Hay algo más que quieras compartir sobre tu experiencia en esta unidad introductoria?
+ - Me gustaría explorar más en p5.js, me encantó cómo funciona, super versatil, de por si con ninguna librería tiene un potencial gigantesco y ahí viendo los ejemplos que están en la pagina principal me diero ganas de llevar al máximo este programa. La pasé excelente haciendo el programa de la actividad 4 y me encantaría ver más actividades utilizando esa plataforma.
+
+4) __Balance inspiración vs. técnica: ¿Cómo sentiste el equilibrio entre ver los videos inspiradores de la Actividad 01 y la parte técnica de conectar las herramientas en las actividades 03-06?__
+
+ - Me gusta el balance que hubo, sin embargo me encantaría que el profesor presentara más trabajos de compañeros nuestros, siento que eso hace que tengamos expectativas más realistas del curso.
+
+5) __Comentario adicional: ¿Hay algo más que quieras compartir sobre tu experiencia en esta unidad introductoria?__
+
+ - Que posterior a las actividades prácticas tengo expectativas altas de lo que sigue del curso, que me interesa bastante.
+
+___
+___
+___
+
