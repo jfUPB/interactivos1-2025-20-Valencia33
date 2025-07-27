@@ -53,6 +53,34 @@ __Parte 2: reflexión sobre tu proceso__
  - Pienso que se justifica pero solo por el uso de las bibliotecas adicionales de micro:bit, sin embargo si me parece mejor cuando los ejercicios son autónomos por que dan la posibilidad de explorar más las documentaciones y la oportunidad de equivocarse, que en mi opinión, es una parte fundamental del aprendizaje.
 
 ___
+
+### 🐟 Actividad 8 🐟
+
+🌱 ACTIVIDAD 1: [5]/5
+Comentarios:
+> 🐟 Las respuestas son completas, claras y concisas.
+
+🌿 ACTIVIDAD 2: [5]/5
+Comentarios:
+> 🐟 Las respuestas son claras. Hace falta mencionar que el sistema tiene cierto grado de autonomía en el proceso, pero todo lo demás es completamente claro.
+
+🌱 ACTIVIDAD 3: [5]/5
+Comentarios:
+> 🐟 Los inputs, outputs y el proceso están descritos claramente y no omiten ninguno de los componentes. 
+
+🌿 ACTIVIDAD 4: [5]/5
+Comentarios:
+> 🐟 El programa es increíblemente creativo, interesante, y cumple con todos los requisitos solicitados. Demuestra un nivel superior de interés por la temática, y un gran entendimiento del simulador y código.
+
+=======================
+
+🌱 ACTIVIDAD 5: [5]/5
+Comentarios:
+> 🐟 La explicación es detallada y cumple con todos los requisitos. Se explica claramente el envío constante del estado del botón A, la lectura en cada frame de aquel dato y cómo esto afecta el color del cuadrado.
+
+🌿 ACTIVIDAD 6: [5]/5
+Comentarios:
+> 🐟 El código es funcional y se hace entrega de todos los elementos solicitados.
 ___
 
 ### 🐟 Actividad 9 🐟
