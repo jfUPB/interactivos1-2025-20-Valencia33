@@ -15,6 +15,8 @@ En un principio crea la clase Pixel, donde va a definir los atributoss que tiene
 
 > __Acciones:__ son actualizaciones y lecturas de variables, basicamente realizar cambios.
 
+♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️
+
 ### 🐟 Actividad 02 🐟
 
 ```python
@@ -50,3 +52,29 @@ semaforo1 = Semaforo()
 while True:
     semaforo1.update()
 ```
+
+♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️♾️
+
+### 🐟 Actividad 03 🐟
+
+__Controlando la pantalla con una máquina de estados y concurrencia__
+
+- ¿Cómo es posible estructurar una aplicación usando una máquina de estados para poder atender varios eventos de manera concurrente?
+
+ La forma que se me ocurre es 
+  
+- ¿Cómo haces para probar que el programa está correcto?
+
+Al iniciar, se muestra una cara feliz durante un segundo y medio. Después, el micro:bit cambia a una expresión sonriente que dura un segundo. Luego, aparece una cara triste durante dos segundos, y el ciclo vuelve a comenzar.
+
+Sin embargo, si en cualquier momento se presiona el botón A mientras la cara feliz o la sonriente están en pantalla, el micro:bit interrumpe el ciclo y muestra inmediatamente la cara triste o feliz, respectivamente. Si se presiona el botón A mientras la cara triste está en pantalla, el dispositivo cambia a la expresión sonriente.
+
+<img width="838" height="1022" alt="image" src="https://github.com/user-attachments/assets/9eba4c8f-4a6c-44b9-80fb-5efd8f566593" />
+
+> __Vectores de prueba:__ Se utilizan para graficar esas condiciones que van a generar un cambio de estado.
+
+ - __Explica por qué decimos que este programa permite realizar de manera concurrente varias tareas.__
+
+ - __Identifica los estados, eventos y acciones en el programa.__
+   
+ - __Describe y aplica al menos 3 vectores de prueba para el programa.__
