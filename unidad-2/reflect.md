@@ -3,6 +3,8 @@
 
 ## 🤔 Fase: Reflect
 
+🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸
+
 ### 🐟 Actividad 06 🐟
 
 __Parte 1: recuperación de conocimiento__
@@ -40,3 +42,27 @@ __Parte 2: reflexión sobre tu proceso__
 - __Ahora que entiendes el patrón de máquina de estados, ¿En qué otro tipo de proyecto o sistema de entretenimiento digital crees que podrías aplicarlo?__
 
   - En general cualquier sistema que requiera tener en cuenta diferentes inputs del usuario. 
+
+🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸
+
+### 🐟 Actividad 07 🐟
+
+🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸
+
+### 🐟 Actividad 08 🐟
+
+- __Continuar: ¿Qué actividad, explicación o ejemplo de esta unidad te ayudó más a entender el poder de las máquinas de estados? ¿Qué elemento consideras que es indispensable y debería mantener?__
+
+  - El de la bomba, siento que esas actividades realmente ponen a prueba toda la teoría aprendida y es con las que más aprendo.
+
+- __Dejar de hacer: ¿Hubo algún paso o actividad que te pareció confuso, innecesariamente complicado o que aportó poco a tu aprendizaje? ¿Qué cambiarías o eliminarías?__
+
+  - No realmente, de pronto el diagrama es un poco tedioso de hacer, pero de cualquier forma me parece lo más necesario.
+
+- __Empezar a hacer: ¿Qué te habría ayudado a entender mejor?__
+
+  - De pronto más ejemplos de los vectores de prueba, ese concepto no me quedó muy claro.
+
+- __Ritmo y dificultad: En una escala del 1 (muy fácil) al 5 (muy difícil), ¿Cómo calificarías la dificultad de pasar del análisis de un programa (Actividad 03) al diseño desde cero de uno complejo (Actividad 04 y 05)? ¿Por qué?__
+
+  - 3, pero solo por que no estamos muy familiarizados con python y realmente no se hace mucho enfasis en la importancia de la documentación, creo que es importante a la hora de empezar con estos nuevos lenguajes dar una guía a la documentación. 
