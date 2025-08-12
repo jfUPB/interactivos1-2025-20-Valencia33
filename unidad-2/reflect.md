@@ -47,6 +47,17 @@ __Parte 2: reflexión sobre tu proceso__
 
 ### 🐟 Actividad 07 🐟
 
+[Bitácora evaluada](https://github.com/jfUPB/interactivos1-2025-20-EsTorrente/tree/unidad2/reflect/unidad-2)
+
+__🌱 Actividad 04 🌱__ 5/5
+
+🏵️ El diagrama incluye los estados, eventos y acciones pedidas. Sin embargo hay un error en una de las acciones del primer estado, donde le suma 10000ms cuando debería ser 1000ms. Sin embargo es un error que no se repite en el código por lo que se puede asumir que fue un desliz. A pesar de esto el diagrama sigue siendo muy completo y cumple con todo lo pedido.
+
+__🍃 Actividad 05 🍃__ 5/5
+
+🏵️ El programa está completo y cumple con lo que pide el enunciado e identifica correctamente lo vectores de prueba. Sin embargo vale la pena mencionar que el profe nos advirtió sobre el uso de scroll() y sleep(), que son funciones que apagan por completo el programa y no le permite realizar otras tareas, de todas formas esto no es un problema en el marco de este ejercicio pero igual es bueno tenerlo en cuenta. Muy buen programa.
+
+
 🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸
 
 ### 🐟 Actividad 08 🐟
@@ -66,3 +77,4 @@ __Parte 2: reflexión sobre tu proceso__
 - __Ritmo y dificultad: En una escala del 1 (muy fácil) al 5 (muy difícil), ¿Cómo calificarías la dificultad de pasar del análisis de un programa (Actividad 03) al diseño desde cero de uno complejo (Actividad 04 y 05)? ¿Por qué?__
 
   - 3, pero solo por que no estamos muy familiarizados con python y realmente no se hace mucho enfasis en la importancia de la documentación, creo que es importante a la hora de empezar con estos nuevos lenguajes dar una guía a la documentación. 
+
