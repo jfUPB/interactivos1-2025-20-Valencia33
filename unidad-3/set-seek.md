@@ -92,9 +92,17 @@ Pensandolo mejor un bool no sería la mejor opción, mejor un int, entonces si s
 __Crear una tabla con los vectores de prueba.__
 
 | Estado inicial | Evento disparador | Acciones | Estado final|
-|----------------|-------------------|----------|-------------|
-| |
-
+|:----------------|-------------------|----------|-------------:|
+| CONFIG | event.read() == 'A' // Botón A presionado | event.set('A') // event.clear(), self.count = min(self.count+1,60), display.show(self.count,wait=False) | CONFIG |
+| CONFIG | event.read() == 'B' // Botón B presionado | event.set('B') //  event.clear(), self.count = max(10,self.count-1), display.show(self.count, wait=False) | CONFIG |
+| CONFIG | event.read() == 'S' // accelerometer('shake') | event.set('S') // event.clear(), self.startTime = utime.ticks_ms(), self.state = 'ARMED' | ARMED|
+| ARMED | utime.ticks_diff(utime.ticks_ms(),self.startTime) > 1000 | self.startTime = utime.ticks_ms(), self.count = self.count - 1, display.show(self.count,wait=False) | ARMED |
+| ARMED | event.read() == 'A' | event.clear(), self.key[self.keyindex] = 'A', self.keyindex = self.keyindex + 1 | ARMED |
+| ARMED | event.read() == 'B' | event.clear() self.key[self.keyindex] = 'B', self.keyindex = self.keyindex + 1 | ARMED |
+| ARMED | self.keyindex == len(self.key) | passIsOK = True, for i in range(len(self.key)):, if self.key[i] != self.PASSWORD[i]:, passIsOK = False, break; | ARMED |
+| ARMED | passIsOK == True | self.count = 20, display.show(self.count,wait=False), self.keyindex = 0, self.state = 'CONFIG' | CONFIG |
+| ARMED | self.count == 0 | display.show(Image.SKULL), self.state = 'EXPLODED' | EXPLODED |
+| EXPLODED | event.read() == 'T' | event.clear(), self.count = 20, display.show(self.count,wait=False), self.startTime = utime.ticks_ms(), self.state = 'CONFIG' | CONFIG |
 
 🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸
 
@@ -220,3 +228,4 @@ while True:
     buttonTask.update()
     bombTask.update()
 ```
+
