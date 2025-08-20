@@ -89,6 +89,9 @@ Pensandolo mejor un bool no sería la mejor opción, mejor un int, entonces si s
 
 ### 🐟 Actividad 05 🐟
 
+<img width="1455" height="1378" alt="PRACTICA 5" src="https://github.com/user-attachments/assets/3229289b-74ed-40c8-8980-ac291f9d22dd" />
+
+
 __Crear una tabla con los vectores de prueba.__
 
 | Estado inicial | Evento disparador | Acciones | Estado final|
@@ -228,4 +231,5 @@ while True:
     buttonTask.update()
     bombTask.update()
 ```
+
 
