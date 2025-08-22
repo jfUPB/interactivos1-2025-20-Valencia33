@@ -91,6 +91,33 @@ class Bomb {
         text(str(this.keyArray[2] ),30,90)
         text(str(this.keyindex),30,120)
         text(str(this.passIsOk),30,150)
+        
+        if(this.keyindex == this.password.length)
+          {
+            
+            this.passIsOk = false
+            
+            for(let i = 0; i < this.password.length; i++)
+              {
+                if(this.keyArray[i] == this.password[i])
+                  {
+                    this.passIsOk = true
+                  }
+              }
+          }
+        
+        if(this.passIsOk)
+          {
+            this.state = "CONFIG"
+            this.conteo = 20
+            this.keyindex = 0
+            
+            for(let i = 0; i<this.keyArray.length; i++)
+              {
+                this.keyArray[i] = " "
+              }
+            
+          }
 
         if((millis()-this.startTime) > (this.conteo*1000) )
           {
@@ -203,7 +230,13 @@ function draw() {
 }
 ```
 
+🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸
+
+### 🐟 Actividad 07 🐟
+
 p5js con micro bit
+
+Profe no tenía el microbit entonces ni idea si quedó bueno. :(
 
 ```js
 let port;
@@ -320,6 +353,33 @@ class Bomb {
         text(str(this.keyArray[2] ),30,90)
         text(str(this.keyindex),30,120)
         text(str(this.passIsOk),30,150)
+
+         if(this.keyindex == this.password.length)
+          {
+            
+            this.passIsOk = false
+            
+            for(let i = 0; i < this.password.length; i++)
+              {
+                if(this.keyArray[i] == this.password[i])
+                  {
+                    this.passIsOk = true
+                  }
+              }
+          }
+        
+        if(this.passIsOk)
+          {
+            this.state = "CONFIG"
+            this.conteo = 20
+            this.keyindex = 0
+            
+            for(let i = 0; i<this.keyArray.length; i++)
+              {
+                this.keyArray[i] = " "
+              }
+            
+          }
 
         if((millis()-this.startTime) > (this.conteo*1000) )
           {
@@ -455,3 +515,4 @@ while True:
         uart.write('S')
 
 ```
+
