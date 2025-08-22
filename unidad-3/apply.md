@@ -92,10 +92,10 @@ class Bomb {
         text(str(this.keyindex),30,120)
         text(str(this.passIsOk),30,150)
         
+         this.passIsOk = false
+        
         if(this.keyindex == this.password.length)
           {
-            
-            this.passIsOk = false
             
             for(let i = 0; i < this.password.length; i++)
               {
@@ -111,6 +111,7 @@ class Bomb {
             this.state = "CONFIG"
             this.conteo = 20
             this.keyindex = 0
+            this.passIsOK = false
             
             for(let i = 0; i<this.keyArray.length; i++)
               {
@@ -354,10 +355,10 @@ class Bomb {
         text(str(this.keyindex),30,120)
         text(str(this.passIsOk),30,150)
 
-         if(this.keyindex == this.password.length)
+         this.passIsOk = false
+        
+        if(this.keyindex == this.password.length)
           {
-            
-            this.passIsOk = false
             
             for(let i = 0; i < this.password.length; i++)
               {
@@ -373,6 +374,7 @@ class Bomb {
             this.state = "CONFIG"
             this.conteo = 20
             this.keyindex = 0
+            this.passIsOK = false
             
             for(let i = 0; i<this.keyArray.length; i++)
               {
@@ -515,4 +517,5 @@ while True:
         uart.write('S')
 
 ```
+
 
