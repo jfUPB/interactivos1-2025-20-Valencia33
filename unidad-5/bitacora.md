@@ -36,3 +36,29 @@ Aunque realmente la pregunta la pude haber respondido que se hacía con un print
 <img width="984" height="855" alt="20250910_172304" src="https://github.com/user-attachments/assets/d5b84bbc-aa73-4d2e-a842-addfc7e794f8" />
 
 <img width="984" height="855" alt="20250910_172603" src="https://github.com/user-attachments/assets/366498ad-7ad1-49af-a20f-29524f2e798c" />
+
+## Actividad 2
+
+> El módulo struct permite empaquetar los datos en un formato binario. En este caso,
+el formato '>2h2B' indica que se envían 2 enteros cortos (xValue, yValue) y 2 enteros
+sin signo (aState, bState). El símbolo > indica que los datos se envían en orden de
+bytes grande (big-endian), lo que significa que el byte más significativo se envía primero.
+El formato 2h indica que se envían 2 enteros cortos de 2 bytes cada uno (xValue, yValue),
+y 2B indica que se envían 2 enteros sin signo de 1 byte cada uno (aState, bState).
+
+### 🧐🧪✍️ EXPERIMENTO 1
+
+<img width="169" height="156" alt="image" src="https://github.com/user-attachments/assets/fcc1e718-ef1c-49c4-89ca-4be21820b4bc" />
+
+Este resultado se ve por que esos son los datos que están siendo guardados en las variables xValue, yValue, aState y bState.
+
+
+### 🧐🧪✍️ EXPERIMENTO 2
+
+<img width="971" height="174" alt="image" src="https://github.com/user-attachments/assets/cd5ecd17-e4ff-4bca-a6b3-02354bc86ebc" />
+
+Este resultado es mucho mas complicado de entender, puesto que hay que interpretar cada segmento del texto entregado. Por lo que entiendo cada "renglón" está definido por "ciclos", uno de estos ciclos se vería así: **0a3138 34 2c 39 38 34 2c 46 61 6c 73 65 2c 46 61 6c 73 65** y no tengo la menor idea de que significa cada cosa.
+
+- **¿Qué ventajas y desventajas ves en usar un formato binario en lugar de texto en ASCII?**
+
+Las ventajas es que manda datos más rápido, pues al menos observé que se entregaban lineas y lineas de código mucho más rápido **PERO** no entiendo nada y no se me ocurre como utilizar esos datos en p5js.
