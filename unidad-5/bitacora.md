@@ -496,3 +496,5 @@ function updateButtonStates(newAState, newBState) {
 ```
 
 ## Proceso de construcción
+
+El proceso de construcción de está versión modificada no fue complejo puesto que la implementación del código nuevo no fue invasiva en ningún aspecto en el programa. Sin embargo, aprovechando que debía cambiar mi aplicación decidí mejorar su estructura puesto que en la unidad pasada había escrito la parte de leer los datos en draw(), por esto, decidí crear una nueva función donde pudiera meter la nueva lógica de lectura de la información del microbit. Una vez puesto este sucedió que no recibía ningún dato y despues de analizar el por qué entendí que fue que no había definido un vector que recibiera los datos concatenados.
