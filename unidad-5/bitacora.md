@@ -70,9 +70,13 @@ Las ventajas es que manda datos más rápido, pues al menos observé que se entr
 
 ### 🧐🧪✍️ EXPERIMENTO 3: Captura el resultado del experimento. ¿Cuántos bytes se están enviando por mensaje? ¿Cómo se relaciona esto con el formato '>2h2B'? ¿Qué significa cada uno de los bytes que se envían?
 
-En este caso es mucho más fácil identificar la estructura de los datos que se envian, me gusta empezar desde atrás puesto que identificar los valores de true/false de aState y bState me parece lo menos desafiante, y esto deja solo cuatro bytes para las otras dos variables.
+<img width="974" height="166" alt="image" src="https://github.com/user-attachments/assets/63604746-8d13-4298-8351-28a3616abd2c" />
+
+En este caso es mucho más fácil identificar la estructura de los datos que se envian, me gusta empezar desde atrás puesto que identificar los valores de true/false de aState y bState me parece lo menos desafiante, y esto deja solo cuatro bytes para las otras dos variables. En este caso [0a][fffd] [fffd][fffd][00][00] se observa claramentte que bytes ocupa cada variable
 
 ### 🧐🧪✍️ EXPERIMENTO 4: Es posible enviar números positivos y negativos para los valores de xValue y yValue. ¿Cómo se verían esos números en el formato '>2h2B'?
+
+<img width="502" height="22" alt="image" src="https://github.com/user-attachments/assets/068cea3c-952f-4337-83ab-79c414602748" />
 
 Yo en alguna parte ya había leído que las letras en hexadecimal se utilizaban para representar número mayores a 10, suponiendo que si vayan en orden entonces yo creería que la F representa un valor de 15. Teniendo eso en cuenta y sabiendo que a la hora de representar un número negativo estos tienen un bit al inicio que representa el signo entonces me atrevo a decir que en la gran mayoría de los casos en el cual el dato tiene una F es por que es negativo. Sin embargo imagino que debe haber algún caso particular o algo por el estilo.
 
@@ -83,6 +87,10 @@ Entonces de cierta forma mi hipotesis si era correcta, solo que el valor que def
 ### 🧐🧪✍️ EXPERIMENTO 5: ¿Qué diferencias ves entre los datos en ASCII y en binario? ¿Qué ventajas y desventajas ves en usar un formato binario en lugar de texto en ASCII? ¿Qué ventajas y desventajas ves en usar un formato ASCII en lugar de binario?
 
 Pues en un principio observo que los datos en binario son más compactos y encima el computador no tiene que hacer una traducción adicional para entenderlos, sin embargo yo si la tengo que hacer, son más complejos para mi. Por otro lado ASCII es mucho más fácil de interpretar para mi por lo que para hacer control de errores y esas cosas es mucho más fácil, sin embargo ocupa más espacio y significa una traducción adicional para el computador.
+
+<img width="989" height="176" alt="image" src="https://github.com/user-attachments/assets/b653236d-f7ff-4a6d-b700-bb15ea563141" />
+
+Encima despues de aprender a pasar de binario a decimal ya no tengo ganas de hacer eso.
 
 ___
 
@@ -522,5 +530,6 @@ function updateButtonStates(newAState, newBState) {
 El proceso de construcción de está versión modificada no fue complejo puesto que la implementación del código nuevo no fue invasiva en ningún aspecto en el programa. Sin embargo, aprovechando que debía cambiar mi aplicación decidí mejorar su estructura puesto que en la unidad pasada había escrito la parte de leer los datos en draw(), por esto, decidí crear una nueva función donde pudiera meter la nueva lógica de lectura de la información del microbit. Una vez puesto este sucedió que no recibía ningún dato y despues de analizar el por qué entendí que fue que no había definido un vector que recibiera los datos concatenados.
 
 ### 🧐🧪✍️ EXPERIMENTOS
+
 
 
