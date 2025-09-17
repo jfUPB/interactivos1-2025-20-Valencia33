@@ -200,7 +200,7 @@ Adicionalmente, desde p5js calcula un checksum con los datos recogidos y lo comp
 
 # Apply
 
-Código microbit
+## Código microbit
 
 ``` py
 from microbit import *
@@ -220,8 +220,341 @@ while True:
     uart.write(packet)
     sleep(100)
 ```
+## Código modificado p5js
 
-Código original p5js
+``` js
+// M_1_4_01
+//
+// Generative Gestaltung – Creative Coding im Web
+// ISBN: 978-3-87439-902-9, First Edition, Hermann Schmidt, Mainz, 2018
+// Benedikt Groß, Hartmut Bohnacker, Julia Laub, Claudius Lazzeroni
+// with contributions by Joey Lee and Niels Poldervaart
+// Copyright 2018
+//
+// http://www.generative-gestaltung.de
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+/**
+ * creates a terrain like mesh based on noise values.
+ *
+ * MOUSE
+ * position x/y + left drag   : specify noise input range
+ * position x/y + right drag  : camera controls
+ *
+ * KEYS
+ * arrow up                   : noise falloff +
+ * arrow down                 : noise falloff -
+ * arrow left                 : noise octaves -
+ * arrow right                : noise octaves +
+ * space                      : new noise seed
+ * +                          : zoom in
+ * -                          : zoom out
+ * s                          : save png
+ */
+
+// ------ mesh ------
+var tileCount;
+var zScale;
+
+// ------ noise ------
+var noiseXRange;
+var noiseYRange;
+var octaves;
+var falloff;
+
+// ------ mesh coloring ------
+var midColor;
+var topColor;
+var bottomColor;
+var strokeColor;
+var threshold;
+
+// ------ mouse interaction ------
+var offsetX;
+var offsetY;
+var clickX;
+var clickY;
+var zoom;
+var rotationX;
+var rotationZ;
+var targetRotationX;
+var targetRotationZ;
+var clickRotationX;
+var clickRotationZ;
+
+let serialBuffer = [];
+
+let port;
+let connectBtn;
+let connectionInitialized = false;
+
+let microBitX = 0;
+let microBitY = 0;
+let microBitAState = false;
+let microBitBState = false;
+
+let prevmicroBitAState = false;
+let prevmicroBitBState = false;
+
+function setup() {
+  createCanvas(600, 600, WEBGL);
+  colorMode(HSB, 360, 100, 100);
+  
+  port = createSerial();
+  connectBtn = createButton('Connect to micro:bit');
+  connectBtn.position(10, 10);
+  connectBtn.mousePressed(connectBtnClick);
+  
+  cursor(CROSS);
+
+  // ------ mesh ------
+  tileCount = 50;
+  zScale = 150;
+
+  // ------ noise ------
+  noiseXRange = 10;
+  noiseYRange = 10;
+  octaves = 4;
+  falloff = 0.5;
+
+  // ------ mesh coloring ------
+  topColor = color(0, 0, 100);
+  midColor = color(75, 99, 63);
+  bottomColor = color(0, 0, 0);
+  strokeColor = color(180, 0);
+  threshold = 0.30;
+
+  // ------ mouse interaction ------
+  offsetX = 0;
+  offsetY = 0;
+  clickX = 0;
+  clickY = 0;
+  zoom = -300;
+  rotationX = 0;
+  rotationZ = 0;
+  targetRotationX = PI / 3;
+  targetRotationZ = 0;
+}
+
+function draw() {
+  background(180,100,50);
+  ambientLight(150);
+  
+  // ------ microbit data ------
+  
+   if (!port.opened()) {
+    connectBtn.html("Connect to micro:bit");
+    microBitConnected = false;
+  } 
+  else {
+    microBitConnected = true;
+    connectBtn.html("Disconnect");
+  }
+
+    if (port.opened() && !connectionInitialized) {
+      port.clear();
+      connectionInitialized = true;
+    }
+  
+  readSerialData()
+
+  // ------ set view ------
+  push();
+  translate(width * 0.05, height * 0.05, zoom);
+  
+  //En esta parte es complejo hacer el cambio puesto que son inputs juntos, por lo que un solo botón no es suficiente, lo que voy a hacer es eliminar el check.
+
+  rotationX += (targetRotationX - rotationX) * 0.25;
+  rotationZ += (targetRotationZ - rotationZ) * 0.25;
+  rotateX(-rotationX);
+  rotateZ(-rotationZ);
+
+  // ------ mesh noise ------
+    noiseXRange = microBitX / 100;
+    noiseYRange = microBitY / 100;
+
+
+  noiseDetail(octaves, falloff);
+  var noiseYMax = 0;
+
+  var tileSizeY = height / tileCount;
+  var noiseStepY = noiseYRange / tileCount;
+
+  for (var meshY = 0; meshY <= tileCount; meshY++) {
+    beginShape(TRIANGLE_STRIP);
+    for (var meshX = 0; meshX <= tileCount; meshX++) {
+
+      var x = map(meshX, 0, tileCount, -width / 2, width / 2);
+      var y = map(meshY, 0, tileCount, -height / 2, height / 2);
+
+      var noiseX = map(meshX, 0, tileCount, 0, noiseXRange);
+      var noiseY = map(meshY, 0, tileCount, 0, noiseYRange);
+      var z1 = noise(noiseX, noiseY);
+      var z2 = noise(noiseX, noiseY + noiseStepY);
+
+      noiseYMax = max(noiseYMax, z1);
+      var interColor;
+      colorMode(RGB);
+      var amount;
+      if (z1 <= threshold) {
+        amount = map(z1, 0, threshold, 0.15, 1);
+        interColor = lerpColor(bottomColor, midColor, amount);
+      } else {
+        amount = map(z1, threshold, noiseYMax, 0, 1);
+        interColor = lerpColor(midColor, topColor, amount);
+      }
+      fill(interColor);
+      stroke(strokeColor);
+      strokeWeight(0);
+      vertex(x, y, z1 * zScale);
+      vertex(x, y + tileSizeY, z2 * zScale);
+    }
+    endShape();
+  }
+  pop();
+  
+  if (falloff > 1.0) falloff = 1.0;
+  if (falloff < 0.0) falloff = 0.0;
+
+  if (keyCode == LEFT_ARROW) octaves--; //INPUT A
+  if (keyCode == RIGHT_ARROW) octaves++; //INPUT B
+  if (octaves < 0) octaves = 0;
+
+  if (zoom < -700) zoom = -700; // '+' //INPUT A + ALGO
+  if (zoom > -340) zoom = -340; // '-' //INPUT B + ALGO
+
+  if (key == 's' || key == 'S') saveCanvas(gd.timestamp(), 'png'); //TOUCH PERO JUANFERFRANCO ME PEGA
+  if (key == ' ') noiseSeed(floor(random(100000)));
+
+}
+
+function mousePressed() {
+  clickX = microBitX;
+  clickY = microBitY;
+  clickRotationX = rotationX;
+  clickRotationZ = rotationZ;
+}
+
+function keyReleased() {
+
+
+}
+
+function connectBtnClick() {
+  if (!port.opened()) {
+    port.open("MicroPython", 115200);
+  } else {
+    port.close();
+  }
+}
+
+function updateButtonStates(newAState, newBState) {
+  
+  if(microBitY <= 900)
+    {
+      
+  if(newAState)
+    {
+      falloff += 0.1
+      zoom += 20
+    }
+  else if(newBState)
+    {
+      falloff -= 0.1
+      zoom -= 20
+    }
+      
+    }
+  else if ( microBitY > 900) {
+    
+    if(newAState)
+      {
+        offsetX += 50 - clickX;
+      }
+    if(newBState)
+      {
+        offsetX -= 50 - clickX;
+      }
+    
+    targetRotationX = min(max(clickRotationX + offsetY / float(width) * TWO_PI, -HALF_PI), HALF_PI);
+    targetRotationZ = clickRotationZ + offsetX / float(height) * TWO_PI;
+  }
+
+     else if ( microBitY<900){
+       
+       offsetY +=50
+         console.log(offsetY)
+    
+    if(newAState)
+      {
+        offsetY -= 50 - clickX
+      }
+    if(newBState)
+      {
+        offsetY-= 50 - clickX
+      }
+    
+    targetRotationX = min(max(clickRotationX + offsetY / float(width) * TWO_PI, -HALF_PI), HALF_PI);
+    targetRotationZ = clickRotationZ + offsetX / float(height) * TWO_PI;
+  }
+  prevmicroBitAState = newAState;
+  prevmicroBitBState = newBState;
+}
+
+function readSerialData() {
+  let available = port.availableBytes();
+  if (available > 0) {
+    let newData = port.readBytes(available);
+    serialBuffer = serialBuffer.concat(newData);
+  }
+
+  while (serialBuffer.length >= 8) {
+    if (serialBuffer[0] !== 0xaa) {
+      serialBuffer.shift();
+      continue;
+    }
+
+    if (serialBuffer.length < 8) break;
+
+    let packet = serialBuffer.slice(0, 8);
+    serialBuffer.splice(0, 8);
+
+    // Separa datos y checksum
+    let dataBytes = packet.slice(1, 7);
+    let receivedChecksum = packet[7];
+    // Calcula el checksum sumando los datos y aplicando módulo 256
+    let computedChecksum = dataBytes.reduce((acc, val) => acc + val, 0) % 256;
+
+    if (computedChecksum !== receivedChecksum) {
+      console.log("Checksum error in packet");
+      continue; // Descarta el paquete si el checksum no es válido
+    }
+
+    // Si el paquete es válido, extrae los valores
+    let buffer = new Uint8Array(dataBytes).buffer;
+    let view = new DataView(buffer);
+    microBitX = view.getInt16(0);
+    microBitY = view.getInt16(2);
+    microBitAState = view.getUint8(4) === 1;
+    microBitBState = view.getUint8(5) === 1;
+    updateButtonStates(microBitAState, microBitBState);
+
+    console.log(
+      `microBitX: ${microBitX} microBitY: ${microBitY} microBitAState: ${microBitAState} microBitBState: ${microBitBState}`
+    );
+  }
+}
+```
+
+## Código original p5js
 
 ``` js
 // M_1_4_01
@@ -528,8 +861,47 @@ function updateButtonStates(newAState, newBState) {
 
 El proceso de construcción de está versión modificada no fue complejo puesto que la implementación del código nuevo no fue invasiva en ningún aspecto en el programa. Sin embargo, aprovechando que debía cambiar mi aplicación decidí mejorar su estructura puesto que en la unidad pasada había escrito la parte de leer los datos en draw(), por esto, decidí crear una nueva función donde pudiera meter la nueva lógica de lectura de la información del microbit. Una vez puesto este sucedió que no recibía ningún dato y despues de analizar el por qué entendí que fue que no había definido un vector que recibiera los datos concatenados.
 
+Pero en si la construcción del programa fue bastante simple.
+
 ### 🧐🧪✍️ EXPERIMENTOS
 
+1.) ¿Que pasa si checksum no existe?
 
+Para empezar eliminé el dato desde el microbit editor
 
+<img width="657" height="300" alt="image" src="https://github.com/user-attachments/assets/2ce66504-b157-4c69-a091-8b2df211c89a" />
 
+Este es el resultado desde la consola de p5js, me parece IMPRESIONANTE por que se nota de una el rol que cumple check sum. Para dar más contexto, en este caso el microbit está totalmente QUIETO y recibe datos diferentes en x y y. Me habría gustado ver que cambiara el aState y bState pero no fue el caso, aunque me gustó mucho este experimento, realmente demuestra y justifica la estructura que deben tener los paquetes.
+
+En conclusión comprendo las ventajas que presentan los datos binarios, pero ese aumento en velocidad llega si y solo si se trabaja con estos datos de forma organizada por medio de checksum y headers para evitar que se salgan de control. Eliminar el check del header y el del checksum cuesta totalmente la funcionalidad de la aplicación. En particular me llama la atención la frecuencia con la que llegan paquetes que no cumplen con la condición del checksum.
+
+2.) ¿Que pasa si no tiene un header?
+
+Pues para empezar el checksum no daría lo que está pidiendo, pero también me gustaría ver el comportamiento particular en mi aplicación. Para esto modifique la aplicación para que no buscara el checksum ni el header
+
+<img width="670" height="333" alt="image" src="https://github.com/user-attachments/assets/7f36c52b-bcdd-4361-a70e-be45683da631" />
+
+No pensé que fuera a ser la gran cosa pero este experimento me demostró que un header es aquello que le da orden a los paquetes y que es una pieza fundamental del programa, me pone a pensar acerca la implementación de hex en nuestro código, por que a pesar de que es más rápido este requiere mucho más orden. También teniendo en cuenta que no tengo el checksum este experimento demuestra la volatilidad de los valores cuando no se delimita un paquete con el header y checksum.
+
+En parte este experimento va de la mano con el anterior, sin embargo en este me di cuenta que el checksum realmente solo funciona si hay un header, pues en cuyo caso de que si haya un checksum este solo hace que el paquete cumpla un tamaño predeterminado pero no va a saber cuando empieza o termina.
+
+3.) ¿Que pasa si cambio los valores del array que reciben las variables?
+
+Esta esta línea de código, la cual es la que se encarga ya de asignar los valores recibidos y convertidos a las variables que utilizamos en p5js.
+
+<img width="444" height="94" alt="image" src="https://github.com/user-attachments/assets/4a4821a1-177a-46fd-9a09-672be76eba8f" />
+
+Desde un principio me parecieron valores muy arbitrarios entonces me dió por cambiarlos a algo que tendría más sentido para mi.
+
+Este fue el resultado:
+
+<img width="629" height="208" alt="image" src="https://github.com/user-attachments/assets/75d184cb-8659-40fc-b668-b82105f555ed" />
+
+Para entender que está sucediendo me gustaría volver a la estructura de nuestro paquete <img width="179" height="19" alt="image" src="https://github.com/user-attachments/assets/be6bee5b-975a-4bb6-9bcb-6885ab8b109f" /> y que es lo que está pasando en p5js. En un principio se entiende que el primer dato en binario es el header, en p5js, se chequea y se crea un nuevo array para guardar los valores "reales". El último dato corresponde al checksum el cual se utiliza para chequear que si se hayan recibido los bytes de un paquete completo. Cuando vi los valores que se extraian del array dataBytes me parecieron muy arbitrarios pero ya haciendo este analisis entiendo que esta estructura está totalmente justificada.
+
+```js
+    microBitX = view.getInt16(0); //donde 0 y 1 son los datos correspondientes a microBitX, por eso se utilizar getInt16, para conseguir ambos bytes.
+    microBitY = view.getInt16(2); //lo mismo pero con 2 y 3
+    microBitAState = view.getUint8(4) === 1; //acá son un solo byte por que es un bool y solo recibe dos datos 1 y 0, este valor de bool está dado con la expresión === 1 que me ENCANTA.
+    microBitBState = view.getUint8(5) === 1; // lo mismo.
+```
