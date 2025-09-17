@@ -5,7 +5,7 @@
 
 ___
 
-## Actividad 1
+## 🐟 Actividad 1 🐟
 
 - **Describe cómo se están comunicando el micro:bit y el sketch de p5.js. ¿Qué datos envía el micro:bit?**
 
@@ -43,7 +43,7 @@ ___
 
 ___
 
-## Actividad 2
+## 🐟 Actividad 2 🐟
 
 > El módulo struct permite empaquetar los datos en un formato binario. En este caso,
 el formato '>2h2B' indica que se envían 2 enteros cortos (xValue, yValue) y 2 enteros
@@ -86,7 +86,7 @@ Pues en un principio observo que los datos en binario son más compactos y encim
 
 ___
 
-## Actividad 3
+## 🐟 Actividad 3 🐟
 
 ### 🧐🧪✍️ EXPERIMENTO 1: Explica por qué en la unidad anterior teníamos que enviar la información delimitada y además marcada con un salto de línea y ahora no es necesario.
 
@@ -522,4 +522,5 @@ function updateButtonStates(newAState, newBState) {
 El proceso de construcción de está versión modificada no fue complejo puesto que la implementación del código nuevo no fue invasiva en ningún aspecto en el programa. Sin embargo, aprovechando que debía cambiar mi aplicación decidí mejorar su estructura puesto que en la unidad pasada había escrito la parte de leer los datos en draw(), por esto, decidí crear una nueva función donde pudiera meter la nueva lógica de lectura de la información del microbit. Una vez puesto este sucedió que no recibía ningún dato y despues de analizar el por qué entendí que fue que no había definido un vector que recibiera los datos concatenados.
 
 ### 🧐🧪✍️ EXPERIMENTOS
+
 
