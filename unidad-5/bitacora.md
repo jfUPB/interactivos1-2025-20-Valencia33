@@ -100,10 +100,9 @@ ___
 
 En la unidad anterior era necesario estos pasos extra puesto que se mandaba la información por medio de una string, entonces para poder trabajar con los datos que mandamos debemos separar y clasificar, en esta unidad esto no se hace por que se utiliza la biblioteca struct que permite mandar paquetes de datos y tambien por que los datos que se reciben son int y strings. Tambien es por que mandamos todo por un puerto.
 
-
 ### 🧐🧪✍️ EXPERIMENTO 2: Compara el código de la unidad anterior relacionado con la recepción de los datos seriales que ves ahora. ¿Qué cambios observas?
 
-```
+``` js
 if (port.availableBytes() >= 6) {
     let data = port.readBytes(6);
     if (data) {
@@ -140,7 +139,7 @@ Ya las demás si entiendo como las recibe y convierte a un valor con el que se p
 
 La razón de este error se me ocurre que es por que en ninguna parte del código se delimitó un final del paquete, entonces pienso que lo que está pasando es que está leyendo muchos valores, sin ningún orden y se lo está asignando a variables que nada que ver.
 
-```
+``` js
 function readSerialData() {
   // Acumula los bytes recibidos en el buffer
   let available = port.availableBytes();
@@ -203,7 +202,7 @@ Adicionalmente, desde p5js calcula un checksum con los datos recogidos y lo comp
 
 Código microbit
 
-```
+``` py
 from microbit import *
 import struct
 
@@ -224,7 +223,7 @@ while True:
 
 Código original p5js
 
-```
+``` js
 // M_1_4_01
 //
 // Generative Gestaltung – Creative Coding im Web
@@ -530,6 +529,7 @@ function updateButtonStates(newAState, newBState) {
 El proceso de construcción de está versión modificada no fue complejo puesto que la implementación del código nuevo no fue invasiva en ningún aspecto en el programa. Sin embargo, aprovechando que debía cambiar mi aplicación decidí mejorar su estructura puesto que en la unidad pasada había escrito la parte de leer los datos en draw(), por esto, decidí crear una nueva función donde pudiera meter la nueva lógica de lectura de la información del microbit. Una vez puesto este sucedió que no recibía ningún dato y despues de analizar el por qué entendí que fue que no había definido un vector que recibiera los datos concatenados.
 
 ### 🧐🧪✍️ EXPERIMENTOS
+
 
 
 
