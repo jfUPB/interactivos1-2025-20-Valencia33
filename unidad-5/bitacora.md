@@ -897,3 +897,22 @@ Para entender que está sucediendo me gustaría volver a la estructura de nuestr
     microBitBState = view.getUint8(5) === 1; // lo mismo.
 ```
 
+## Reflect
+
+- 1.) **Realiza una tabla donde compares, según la aplicación que modificaste en la fase de aplicación de ambas unidades, los siguientes aspectos: eficiencia, velocidad, facilidad**
+
+| APLICACIÓN | EFICIENCIA | VELOCIDAD | FACILIDAD |
+|------|--------|---------|-------|
+| **Binario** | Es mucho más eficiente que la anterior, de pronto en una cantidad imperceptible pero imagino que el computador no tenga que traducir para interpretarlo juega un rol grande | Este es mucho más rápido, no solo en lo anterior sino que yo personalmente cambié la velocidad a la que manda datos de 100ms a 10ms (el cual al parecer es el mínimo, más pequeño crashea) esto lo comprobé utilizando SerialTerminal el cual claramente mostraba la diferencia | La implementación es más compleja y menos intuitiva, más que todo por que  2 de los 8 datos que se reciben no son "tangibles" por decirlo de alguna forma. Es la única desventaja que encontré de Binario.|
+| **ASCII** | Es eficiente y encima no hay que utilizar sleep para el envio de datos, esto puede ser un pro a favor de ASCII, sin embargo si noté que era menos eficiente que binario, esto lo comprobé utilizando SerialTerminal, donde observé que a pesar de que si mandaba muchos datos por segundo eran menos que el otro. | Más lento que el otro, sin duda alguna | Mucho más fácil de comprender e implementar, debido a que no se utiliza binario es mucho más fácil comprender los datos que llegan por lo que es una aplicación más fácil de manejar |
+
+- 2.) **¿Por qué fue necesario introducir framing en el protocolo binario?**
+
+    - Por que de esa forma se pueden organizar los paquetes que se envian para que el computador no confunda los valores que recibe, de no tener esto se pueden recibir paquetes incompletos o con información inconsistente.
+
+- 3.) **¿Cómo funciona el framing?**
+    
+    - Tiene dos elementos fundamentales, el header y el checksum. El header se encarga de marcar el principio de un paquete, para que sepa cuando termina y empieza uno. El checksum se encarga de que el paquete si cumpla con el tamaño adecuado. 
+ 
+
+
