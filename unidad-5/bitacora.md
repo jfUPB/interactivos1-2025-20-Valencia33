@@ -914,5 +914,22 @@ Para entender que está sucediendo me gustaría volver a la estructura de nuestr
     
     - Tiene dos elementos fundamentales, el header y el checksum. El header se encarga de marcar el principio de un paquete, para que sepa cuando termina y empieza uno. El checksum se encarga de que el paquete si cumpla con el tamaño adecuado. 
  
+- 4.) **¿Qué es un carácter de sincronización?**
+
+    - Un carácter de sincronización creooooo que se refiere a aquellos que definen cuando empieza o acaba un paquete, entonces en realidad se refiere a un header.
+
+- 5.) **¿Qué es el checksum y para qué sirve?**
+
+    - El checksum sirve para saber la cantidad de bytes que tiene un paquete, si un paquete está completo entonces significa que satisface la cantidad de información que debe tener.
+
+- 6.) **En la función readSerialData() del programa en p5.js:**
+    
+    - ¿Qué hace la función concat? ¿Por qué?
+        
+        - concat se encarga de concatenar aquella información que llega dividida.
+    
+    - En la función readSerialData() tenemos un bucle que recorre el buffer solo si este tiene 8 o más bytes ¿Por qué?
+        
+        - Por que en caso de que tenga menos eso significa que el paquete no viene completo.   
 
 
