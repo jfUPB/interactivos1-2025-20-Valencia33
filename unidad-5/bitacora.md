@@ -933,14 +933,18 @@ Para entender que está sucediendo me gustaría volver a la estructura de nuestr
         - Por que en caso de que tenga menos eso significa que el paquete no viene completo.   
 ## Autoevaluación
 
+Nota general: 4.6/5
+
 - Profundidad de la indagación 5/5
    - En varios aspectos de la unidad me propuse investigar de mas, como funciona la traducción de binario a texti y vicebersa y experimentos adicionales en las diferentes actividades, por lo que considero que si fui mas alla de hacer lo que proponía la unidad como tal. Un ejemplo de donde hice esto fue durante la realización y analisis de los experimentos y las actividades propuestas.
 
 - Calidad de la experimentación 5/5
 - A pesar de que no hice cambios o propuestas diferentes en los experimentos que se proponían en la unidad pienso que en carias ocaciones mi análisis fue más allá y busqué en diferentes fuentes para confirmar mis observaciones e hipótesis, de esta forma pienso que la calidad de mi experimentación fue adecuada pero más que eso pienso que logré comprender los conceptos por los análisis profundos que hice de los experimentos.
 
-- Análisis de reflexión 5/5
+- Análisis de reflexión 4/5
 - Precisamente por lo que mencioné en el punto anterior pienso que mi punto fuerte en esta unidad fue mi reflexión con respecto a los puntos que se proponían, me gustaría mencionar que esto se dió por que me parecieron muy pertinentes y cada experimento nuevo exploraba aspectos que aún no había explorado o no comprendía por completo, es por esto que pienso que mi reflexión fue buena, puesto que los experimentos me obligaban a cambiar y mejorar mis preguntas para así entender mejor los conceptos. Un ejemplo de esto fueron los experimentos en los que investigué aspectos los cuales me permitían comprender mejor los conceptos vistos.
   
-- 
+- Apropiación y articulación de conceptos 5/5
+- Siento que comprendí a profundidad los conceptos de la unidad, no solo por que eran simoles sino también por que los experimentos que propuse al final realmente demostraron un análisis completo de aquello que proponía la unidad, es por esto y también por mi realización de las demás actividades que puedo decir con seguridad que los conceptos y su articulación en esta unidad fue completa.
+
 
