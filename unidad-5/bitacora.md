@@ -1,3 +1,951 @@
 
 # Evidencias de la unidad 5
 
+# Set / Seek
+
+___
+
+## 🐟 Actividad 1 🐟
+
+- **Describe cómo se están comunicando el micro:bit y el sketch de p5.js. ¿Qué datos envía el micro:bit?**
+
+    - El microbit lo que hace es que manda un "array" de valores con el nombre **data**, realmente no es un array, es más un formato de texto que se le da a los siguientes atributos: xValue, yValue, aState y bState. Esta variable **data** es lo que se manda por el serial, un ejemplo de como se vería sería así: 1000, 900, true, false\n. Una vez p5.js recibe esa información entonces corta ese string cada vez que haya una coma y deja de hacerlo cuando encuentre "\n".
+
+- **¿Cómo es la estructura del protocolo ASCII usado?**
+
+    - No tengo ni idea a que se refiere con protocolo ASCII pero creo que es el como se pasan los datos. En este caso es un string como lo expliqué en el punto anterior, y los valores que se pasan van de -1024 a 1024 para xValue y yValue y de true a false en aState y bState donde ambos son pasados como strings.
+
+- **Muestra y explica la parte del código de p5.js donde lee los datos del micro:bit y los transforma en coordenadas de la pantalla.**
+
+    - En esta porción de código es donde se reciben los datos del microbit, lo que hace es que lee y separa la string que recibe cada que encuentre una coma, espera que esos datos vengan un orden predeterminado puesto que justo despues los mete en un array que se llama values, el cual almacena strings. Despues de dividir y guardar la string debe de hacer otros procesos puesto que xValue y yValue son enteros y aState y bState son booleanos, entonces le hace el parse a Int a los dos primeros y lo mismo con los dos últimos pero a bool.
+
+    - Ya para xValue y yValue hace que sus valores correspondan con las dimensiones de la pantalla, sumandoles la mitad de la altura y el ancho. De esta forma ahora xValue y yValue pueden ser utilizados para representar coordenadas en la pantalla.
+
+      <img width="546" height="300" alt="image" src="https://github.com/user-attachments/assets/81ee256b-d888-4cbf-8505-87358df450e4" />
+
+- **¿Cómo se generan los eventos A pressed y B released que se generan en p5.js a partir de los datos que envía el micro:bit?**
+
+    - Para ambos hace uso de una variable adicional que sirve para chequear el estado de los botones en el frame anterior, de esta forma se sabe si fueron presionados o si los soltaron. Esos son los chequeos que se realizan. Para **Apressed** lo que hace es que mira si newAState es true y precNewAState es falso, como el valor de prevNewAState es definido al final de cada frame entonces se entiende que si esa condición es true entonces A acaba de ser presionado.
+
+    - Para **Bpressed** es lo mismo pero se chequea si newBState == false y prevNewBState == true, de esta forma se sabe que en el frame anterior B estaba presionado pero en este no, lo que significa que B fue soltado.
+
+      <img width="594" height="328" alt="image" src="https://github.com/user-attachments/assets/1d648c8f-55bf-42e4-bbe4-2ef9904d0466" />
+
+- **Capturas de pantalla de los algunos dibujos que hayas hecho con el sketch.**
+
+<img width="984" height="855" alt="20250910_171838" src="https://github.com/user-attachments/assets/e4f89c64-c748-466d-9e77-ba116fcfc173" />
+
+<img width="984" height="855" alt="20250910_172304" src="https://github.com/user-attachments/assets/d5b84bbc-aa73-4d2e-a842-addfc7e794f8" />
+
+<img width="984" height="855" alt="20250910_172603" src="https://github.com/user-attachments/assets/366498ad-7ad1-49af-a20f-29524f2e798c" />
+
+___
+
+## 🐟 Actividad 2 🐟
+
+> El módulo struct permite empaquetar los datos en un formato binario. En este caso, el formato '>2h2B' indica que se envían 2 enteros cortos (xValue, yValue) y 2 enteros sin signo (aState, bState). El símbolo > indica que los datos se envían en orden de bytes grande (big-endian), lo que significa que el byte más significativo se envía primero. El formato 2h indica que se envían 2 enteros cortos de 2 bytes cada uno (xValue, yValue), y 2B indica que se envían 2 enteros sin signo de 1 byte cada uno (aState, bState).
+
+### 🧐🧪✍️ EXPERIMENTO 1: ¿Por qué se ve este resultado?
+
+<img width="169" height="156" alt="image" src="https://github.com/user-attachments/assets/fcc1e718-ef1c-49c4-89ca-4be21820b4bc" />
+
+- Este resultado se ve por que esos son los datos que están siendo guardados en las variables xValue, yValue, aState y bState y es por la estructura que se le dió al paquete cuando se envió por el puerto serial.
+
+### 🧐🧪✍️ EXPERIMENTO 2: Lo que ves ¿Cómo está relacionado con esta línea de código?
+
+<img width="971" height="174" alt="image" src="https://github.com/user-attachments/assets/cd5ecd17-e4ff-4bca-a6b3-02354bc86ebc" />
+
+ - Este resultado es mucho mas complicado de entender, puesto que hay que interpretar cada segmento del texto entregado. Por lo que entiendo cada "renglón" está definido por "ciclos", uno de estos ciclos se vería así: **0a3138 34 2c 39 38 34 2c 46 61 6c 73 65 2c 46 61 6c 73 65** y no tengo la menor idea de que significa cada cosa.
+
+- **¿Qué ventajas y desventajas ves en usar un formato binario en lugar de texto en ASCII?**
+
+    - Las ventajas es que manda datos más rápido, pues al menos observé que se entregaban lineas y lineas de código mucho más rápido **PERO** no entiendo nada y no se me ocurre como utilizar esos datos en p5js.
+
+### 🧐🧪✍️ EXPERIMENTO 3: Captura el resultado del experimento. ¿Cuántos bytes se están enviando por mensaje? ¿Cómo se relaciona esto con el formato '>2h2B'? ¿Qué significa cada uno de los bytes que se envían?
+
+<img width="974" height="166" alt="image" src="https://github.com/user-attachments/assets/63604746-8d13-4298-8351-28a3616abd2c" />
+
+- En este caso es mucho más fácil identificar la estructura de los datos que se envian, me gusta empezar desde atrás puesto que identificar los valores de true/false de aState y bState me parece lo menos desafiante, y esto deja solo cuatro bytes para las otras dos variables. En este caso [0a][fffd] [fffd][fffd][00][00] se observa claramentte que bytes ocupa cada variable
+
+### 🧐🧪✍️ EXPERIMENTO 4: Es posible enviar números positivos y negativos para los valores de xValue y yValue. ¿Cómo se verían esos números en el formato '>2h2B'?
+
+<img width="502" height="22" alt="image" src="https://github.com/user-attachments/assets/068cea3c-952f-4337-83ab-79c414602748" />
+
+- Yo en alguna parte ya había leído que las letras en hexadecimal se utilizaban para representar número mayores a 10, suponiendo que si vayan en orden entonces yo creería que la F representa un valor de 15. Teniendo eso en cuenta y sabiendo que a la hora de representar un número negativo estos tienen un bit al inicio que representa el signo entonces me atrevo a decir que en la gran mayoría de los casos en el cual el dato tiene una F es por que es negativo. Sin embargo imagino que debe haber algún caso particular o algo por el estilo.
+
+- Despues de buscar entiendo que se debe observar el primer dígito hexadecimal y ver si cumple que >7, en cuyo caso es un número negativo, esto se da debido a que la conversión de binario a hexadecimal sigue un proceso medio extraño. Digamos tengo el número 2, que en binario con 8 bits y con signo sería 0000 0010, si quiero encontrar -2 entonces tengo que intercambiar los bits, de 0 a 1 y viceversa, de tal forma que quedaría así 1111 1101, y despues sumarle 1, es decir: 1111 1101 + 0000 0001 = 1111 1110, el cúal en hexadecimal es FE.
+
+- Entonces de cierta forma mi hipotesis si era correcta, solo que el valor que define si es o no negativo es el primero y no cualquiera, y además es negativo si es <7.
+
+### 🧐🧪✍️ EXPERIMENTO 5: ¿Qué diferencias ves entre los datos en ASCII y en binario? ¿Qué ventajas y desventajas ves en usar un formato binario en lugar de texto en ASCII? ¿Qué ventajas y desventajas ves en usar un formato ASCII en lugar de binario?
+
+- Pues en un principio observo que los datos en binario son más compactos y encima el computador no tiene que hacer una traducción adicional para entenderlos, sin embargo yo si la tengo que hacer, son más complejos para mi. Por otro lado ASCII es mucho más fácil de interpretar para mi por lo que para hacer control de errores y esas cosas es mucho más fácil, sin embargo ocupa más espacio y significa una traducción adicional para el computador.
+
+<img width="989" height="176" alt="image" src="https://github.com/user-attachments/assets/b653236d-f7ff-4a6d-b700-bb15ea563141" />
+
+- Encima despues de aprender a pasar de binario a decimal ya no tengo ganas de hacer eso.
+
+___
+
+## 🐟 Actividad 3 🐟
+
+### 🧐🧪✍️ EXPERIMENTO 1: Explica por qué en la unidad anterior teníamos que enviar la información delimitada y además marcada con un salto de línea y ahora no es necesario.
+
+- En la unidad anterior era necesario estos pasos extra puesto que se mandaba la información por medio de una string, entonces para poder trabajar con los datos que mandamos debemos separar y clasificar, en esta unidad esto no se hace por que se utiliza la biblioteca struct que permite mandar paquetes de datos y tambien por que los datos que se reciben son int y strings. Tambien es por que mandamos todo por un puerto.
+
+### 🧐🧪✍️ EXPERIMENTO 2: Compara el código de la unidad anterior relacionado con la recepción de los datos seriales que ves ahora. ¿Qué cambios observas?
+
+``` js
+if (port.availableBytes() >= 6) {
+    let data = port.readBytes(6);
+    if (data) {
+    const buffer = new Uint8Array(data).buffer;
+    const view = new DataView(buffer);
+    microBitX = view.getInt16(0);
+    microBitY = view.getInt16(2);
+    microBitAState = view.getUint8(4) === 1;
+    microBitBState = view.getUint8(5) === 1;
+    updateButtonStates(microBitAState, microBitBState);
+
+    print(`microBitX: ${microBitX} microBitY: ${microBitY} microBitAState: ${microBitAState} microBitBState: ${microBitBState} \n` );
+
+    /*
+    microBitX = int(values[0]) + windowWidth / 2;
+    microBitY = int(values[1]) + windowHeight / 2;
+    microBitAState = values[2].toLowerCase() === "true";
+    microBitBState = values[3].toLowerCase() === "true";
+    updateButtonStates(microBitAState, microBitBState);
+    */
+
+    }
+}
+```
+- En un principio observo que está chequeando si los bytes disponibles son mayor o iguales a 6, en ejercicios anteriores esto no sucedía, solamente chequeaba si había uno. Adiconalmente cuando crea la variable data lee los 6 primeros bytes, a diferencia de los otros ejercicios en los cuales solo leía el primer byte.
+
+- Por otra parte crea dos variables: La primera es buffer cuyo valor es un array de Uints de 8 bytes de data. Otra de estas variables es view.
+
+- Ya las demás si entiendo como las recibe y convierte a un valor con el que se pueda trabajar. lo que hace para cada uno de los valores es que les hace un parse a int pero a los valores a los que les hace el parse tienen unos valores muy arbitrarios 0 y 2, no sé por que por que eso no corresponde al orden con el que se mandaron desde el microbit. Para microBitAState y microBitBState tambien les hace un parse a uint pero utiliza el operador "===" para convertilos a true o false si cumplen con que = 1.
+
+### 🧐🧪✍️ EXPERIMENTO 3:  ¿Qué ves en la consola? ¿Por qué crees que se produce este error?
+
+<img width="755" height="105" alt="image" src="https://github.com/user-attachments/assets/921ed8ea-127a-4497-bb99-d8c94acf5763" />
+
+- La razón de este error se me ocurre que es por que en ninguna parte del código se delimitó un final del paquete, entonces pienso que lo que está pasando es que está leyendo muchos valores, sin ningún orden y se lo está asignando a variables que nada que ver.
+
+``` js
+function readSerialData() {
+  // Acumula los bytes recibidos en el buffer
+  let available = port.availableBytes();
+  if (available > 0) {
+    let newData = port.readBytes(available);
+    serialBuffer = serialBuffer.concat(newData);
+  }
+
+  // Procesa el buffer mientras tenga al menos 8 bytes (tamaño de un paquete)
+  while (serialBuffer.length >= 8) {
+    // Busca el header (0xAA)
+    if (serialBuffer[0] !== 0xaa) {
+      serialBuffer.shift(); // Descarta bytes hasta encontrar el header
+      continue;
+    }
+
+    // Si hay menos de 8 bytes, espera a que llegue el paquete completo
+    if (serialBuffer.length < 8) break;
+
+    // Extrae los 8 bytes del paquete
+    let packet = serialBuffer.slice(0, 8);
+    serialBuffer.splice(0, 8); // Elimina el paquete procesado del buffer
+
+    // Separa datos y checksum
+    let dataBytes = packet.slice(1, 7);
+    let receivedChecksum = packet[7];
+    // Calcula el checksum sumando los datos y aplicando módulo 256
+    let computedChecksum = dataBytes.reduce((acc, val) => acc + val, 0) % 256;
+
+    if (computedChecksum !== receivedChecksum) {
+      console.log("Checksum error in packet");
+      continue; // Descarta el paquete si el checksum no es válido
+    }
+
+    // Si el paquete es válido, extrae los valores
+    let buffer = new Uint8Array(dataBytes).buffer;
+    let view = new DataView(buffer);
+    microBitX = view.getInt16(0);
+    microBitY = view.getInt16(2);
+    microBitAState = view.getUint8(4) === 1;
+    microBitBState = view.getUint8(5) === 1;
+    updateButtonStates(microBitAState, microBitBState);
+
+    console.log(
+      `microBitX: ${microBitX} microBitY: ${microBitY} microBitAState: ${microBitAState} microBitBState: ${microBitBState}`
+    );
+  }
+}
+```
+
+### 🧐🧪✍️ EXPERIMENTO 4: ¿Qué cambios tienen los programas y ¿Qué puedes observar en la consola del editor de p5.js?
+
+- La diferencia en el código del microbit es que ahora crea un paquete base al cual le añade un byte inicial y de último un byte que corresponde al resultado de data % 256, para chequear que todos los bytes están llenos.
+
+- Ya en p5js lo que se hace es que busca el header y si no lo encuentra entonces descarta esos bytes. además tambien chequea que llegue la información completa y una vez está sale de ese if y corta el paquete por partes, del 1 - 7 lo guarda en data bytes y el último dato lo guarda (este corresponde al checksum).
+
+- Adicionalmente, desde p5js calcula un checksum con los datos recogidos y lo compara con el que llegó, ya si el paquete es válido entonces ahí si guarda los datos.
+
+# Apply
+
+## 📘 Código microbit 📘
+
+``` py
+from microbit import *
+import struct
+
+uart.init(115200)
+display.set_pixel(0, 0, 9)
+
+while True:
+    xValue = accelerometer.get_x()
+    yValue = accelerometer.get_y()
+    aState = button_a.is_pressed()
+    bState = button_b.is_pressed()
+    data = struct.pack('>2h2B', xValue, yValue, int(aState), int(bState))
+    checksum = sum(data) % 256
+    packet = b'\xAA' + data + bytes([checksum])
+    uart.write(packet)
+    sleep(100)
+```
+## 📕 Código modificado p5js 📕
+
+``` js
+// M_1_4_01
+//
+// Generative Gestaltung – Creative Coding im Web
+// ISBN: 978-3-87439-902-9, First Edition, Hermann Schmidt, Mainz, 2018
+// Benedikt Groß, Hartmut Bohnacker, Julia Laub, Claudius Lazzeroni
+// with contributions by Joey Lee and Niels Poldervaart
+// Copyright 2018
+//
+// http://www.generative-gestaltung.de
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+/**
+ * creates a terrain like mesh based on noise values.
+ *
+ * MOUSE
+ * position x/y + left drag   : specify noise input range
+ * position x/y + right drag  : camera controls
+ *
+ * KEYS
+ * arrow up                   : noise falloff +
+ * arrow down                 : noise falloff -
+ * arrow left                 : noise octaves -
+ * arrow right                : noise octaves +
+ * space                      : new noise seed
+ * +                          : zoom in
+ * -                          : zoom out
+ * s                          : save png
+ */
+
+// ------ mesh ------
+var tileCount;
+var zScale;
+
+// ------ noise ------
+var noiseXRange;
+var noiseYRange;
+var octaves;
+var falloff;
+
+// ------ mesh coloring ------
+var midColor;
+var topColor;
+var bottomColor;
+var strokeColor;
+var threshold;
+
+// ------ mouse interaction ------
+var offsetX;
+var offsetY;
+var clickX;
+var clickY;
+var zoom;
+var rotationX;
+var rotationZ;
+var targetRotationX;
+var targetRotationZ;
+var clickRotationX;
+var clickRotationZ;
+
+let serialBuffer = [];
+
+let port;
+let connectBtn;
+let connectionInitialized = false;
+
+let microBitX = 0;
+let microBitY = 0;
+let microBitAState = false;
+let microBitBState = false;
+
+let prevmicroBitAState = false;
+let prevmicroBitBState = false;
+
+function setup() {
+  createCanvas(600, 600, WEBGL);
+  colorMode(HSB, 360, 100, 100);
+  
+  port = createSerial();
+  connectBtn = createButton('Connect to micro:bit');
+  connectBtn.position(10, 10);
+  connectBtn.mousePressed(connectBtnClick);
+  
+  cursor(CROSS);
+
+  // ------ mesh ------
+  tileCount = 50;
+  zScale = 150;
+
+  // ------ noise ------
+  noiseXRange = 10;
+  noiseYRange = 10;
+  octaves = 4;
+  falloff = 0.5;
+
+  // ------ mesh coloring ------
+  topColor = color(0, 0, 100);
+  midColor = color(75, 99, 63);
+  bottomColor = color(0, 0, 0);
+  strokeColor = color(180, 0);
+  threshold = 0.30;
+
+  // ------ mouse interaction ------
+  offsetX = 0;
+  offsetY = 0;
+  clickX = 0;
+  clickY = 0;
+  zoom = -300;
+  rotationX = 0;
+  rotationZ = 0;
+  targetRotationX = PI / 3;
+  targetRotationZ = 0;
+}
+
+function draw() {
+  background(180,100,50);
+  ambientLight(150);
+  
+  // ------ microbit data ------
+  
+   if (!port.opened()) {
+    connectBtn.html("Connect to micro:bit");
+    microBitConnected = false;
+  } 
+  else {
+    microBitConnected = true;
+    connectBtn.html("Disconnect");
+  }
+
+    if (port.opened() && !connectionInitialized) {
+      port.clear();
+      connectionInitialized = true;
+    }
+  
+  readSerialData()
+
+  // ------ set view ------
+  push();
+  translate(width * 0.05, height * 0.05, zoom);
+  
+  //En esta parte es complejo hacer el cambio puesto que son inputs juntos, por lo que un solo botón no es suficiente, lo que voy a hacer es eliminar el check.
+
+  rotationX += (targetRotationX - rotationX) * 0.25;
+  rotationZ += (targetRotationZ - rotationZ) * 0.25;
+  rotateX(-rotationX);
+  rotateZ(-rotationZ);
+
+  // ------ mesh noise ------
+    noiseXRange = microBitX / 100;
+    noiseYRange = microBitY / 100;
+
+
+  noiseDetail(octaves, falloff);
+  var noiseYMax = 0;
+
+  var tileSizeY = height / tileCount;
+  var noiseStepY = noiseYRange / tileCount;
+
+  for (var meshY = 0; meshY <= tileCount; meshY++) {
+    beginShape(TRIANGLE_STRIP);
+    for (var meshX = 0; meshX <= tileCount; meshX++) {
+
+      var x = map(meshX, 0, tileCount, -width / 2, width / 2);
+      var y = map(meshY, 0, tileCount, -height / 2, height / 2);
+
+      var noiseX = map(meshX, 0, tileCount, 0, noiseXRange);
+      var noiseY = map(meshY, 0, tileCount, 0, noiseYRange);
+      var z1 = noise(noiseX, noiseY);
+      var z2 = noise(noiseX, noiseY + noiseStepY);
+
+      noiseYMax = max(noiseYMax, z1);
+      var interColor;
+      colorMode(RGB);
+      var amount;
+      if (z1 <= threshold) {
+        amount = map(z1, 0, threshold, 0.15, 1);
+        interColor = lerpColor(bottomColor, midColor, amount);
+      } else {
+        amount = map(z1, threshold, noiseYMax, 0, 1);
+        interColor = lerpColor(midColor, topColor, amount);
+      }
+      fill(interColor);
+      stroke(strokeColor);
+      strokeWeight(0);
+      vertex(x, y, z1 * zScale);
+      vertex(x, y + tileSizeY, z2 * zScale);
+    }
+    endShape();
+  }
+  pop();
+  
+  if (falloff > 1.0) falloff = 1.0;
+  if (falloff < 0.0) falloff = 0.0;
+
+  if (keyCode == LEFT_ARROW) octaves--; //INPUT A
+  if (keyCode == RIGHT_ARROW) octaves++; //INPUT B
+  if (octaves < 0) octaves = 0;
+
+  if (zoom < -700) zoom = -700; // '+' //INPUT A + ALGO
+  if (zoom > -340) zoom = -340; // '-' //INPUT B + ALGO
+
+  if (key == 's' || key == 'S') saveCanvas(gd.timestamp(), 'png'); //TOUCH PERO JUANFERFRANCO ME PEGA
+  if (key == ' ') noiseSeed(floor(random(100000)));
+
+}
+
+function mousePressed() {
+  clickX = microBitX;
+  clickY = microBitY;
+  clickRotationX = rotationX;
+  clickRotationZ = rotationZ;
+}
+
+function keyReleased() {
+
+
+}
+
+function connectBtnClick() {
+  if (!port.opened()) {
+    port.open("MicroPython", 115200);
+  } else {
+    port.close();
+  }
+}
+
+function updateButtonStates(newAState, newBState) {
+  
+  if(microBitY <= 900)
+    {
+      
+  if(newAState)
+    {
+      falloff += 0.1
+      zoom += 20
+    }
+  else if(newBState)
+    {
+      falloff -= 0.1
+      zoom -= 20
+    }
+      
+    }
+  else if ( microBitY > 900) {
+    
+    if(newAState)
+      {
+        offsetX += 50 - clickX;
+      }
+    if(newBState)
+      {
+        offsetX -= 50 - clickX;
+      }
+    
+    targetRotationX = min(max(clickRotationX + offsetY / float(width) * TWO_PI, -HALF_PI), HALF_PI);
+    targetRotationZ = clickRotationZ + offsetX / float(height) * TWO_PI;
+  }
+
+     else if ( microBitY<900){
+       
+       offsetY +=50
+         console.log(offsetY)
+    
+    if(newAState)
+      {
+        offsetY -= 50 - clickX
+      }
+    if(newBState)
+      {
+        offsetY-= 50 - clickX
+      }
+    
+    targetRotationX = min(max(clickRotationX + offsetY / float(width) * TWO_PI, -HALF_PI), HALF_PI);
+    targetRotationZ = clickRotationZ + offsetX / float(height) * TWO_PI;
+  }
+  prevmicroBitAState = newAState;
+  prevmicroBitBState = newBState;
+}
+
+function readSerialData() {
+  let available = port.availableBytes();
+  if (available > 0) {
+    let newData = port.readBytes(available);
+    serialBuffer = serialBuffer.concat(newData);
+  }
+
+  while (serialBuffer.length >= 8) {
+    if (serialBuffer[0] !== 0xaa) {
+      serialBuffer.shift();
+      continue;
+    }
+
+    if (serialBuffer.length < 8) break;
+
+    let packet = serialBuffer.slice(0, 8);
+    serialBuffer.splice(0, 8);
+
+    // Separa datos y checksum
+    let dataBytes = packet.slice(1, 7);
+    let receivedChecksum = packet[7];
+    // Calcula el checksum sumando los datos y aplicando módulo 256
+    let computedChecksum = dataBytes.reduce((acc, val) => acc + val, 0) % 256;
+
+    if (computedChecksum !== receivedChecksum) {
+      console.log("Checksum error in packet");
+      continue; // Descarta el paquete si el checksum no es válido
+    }
+
+    // Si el paquete es válido, extrae los valores
+    let buffer = new Uint8Array(dataBytes).buffer;
+    let view = new DataView(buffer);
+    microBitX = view.getInt16(0);
+    microBitY = view.getInt16(2);
+    microBitAState = view.getUint8(4) === 1;
+    microBitBState = view.getUint8(5) === 1;
+    updateButtonStates(microBitAState, microBitBState);
+
+    console.log(
+      `microBitX: ${microBitX} microBitY: ${microBitY} microBitAState: ${microBitAState} microBitBState: ${microBitBState}`
+    );
+  }
+}
+```
+
+## 📕 Código original p5js 📕
+
+``` js
+// M_1_4_01
+//
+// Generative Gestaltung – Creative Coding im Web
+// ISBN: 978-3-87439-902-9, First Edition, Hermann Schmidt, Mainz, 2018
+// Benedikt Groß, Hartmut Bohnacker, Julia Laub, Claudius Lazzeroni
+// with contributions by Joey Lee and Niels Poldervaart
+// Copyright 2018
+//
+// http://www.generative-gestaltung.de
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+/**
+ * creates a terrain like mesh based on noise values.
+ *
+ * MOUSE
+ * position x/y + left drag   : specify noise input range
+ * position x/y + right drag  : camera controls
+ *
+ * KEYS
+ * arrow up                   : noise falloff +
+ * arrow down                 : noise falloff -
+ * arrow left                 : noise octaves -
+ * arrow right                : noise octaves +
+ * space                      : new noise seed
+ * +                          : zoom in
+ * -                          : zoom out
+ * s                          : save png
+ */
+
+// ------ mesh ------
+var tileCount;
+var zScale;
+
+// ------ noise ------
+var noiseXRange;
+var noiseYRange;
+var octaves;
+var falloff;
+
+// ------ mesh coloring ------
+var midColor;
+var topColor;
+var bottomColor;
+var strokeColor;
+var threshold;
+
+// ------ mouse interaction ------
+var offsetX;
+var offsetY;
+var clickX;
+var clickY;
+var zoom;
+var rotationX;
+var rotationZ;
+var targetRotationX;
+var targetRotationZ;
+var clickRotationX;
+var clickRotationZ;
+
+let port;
+let connectBtn;
+let connectionInitialized = false;
+
+let microBitX = 0;
+let microBitY = 0;
+let microBitAState = false;
+let microBitBState = false;
+
+let prevmicroBitAState = false;
+let prevmicroBitBState = false;
+
+function setup() {
+  createCanvas(600, 600, WEBGL);
+  colorMode(HSB, 360, 100, 100);
+  
+  port = createSerial();
+  connectBtn = createButton('Connect to micro:bit');
+  connectBtn.position(10, 10);
+  connectBtn.mousePressed(connectBtnClick);
+  
+  cursor(CROSS);
+
+  // ------ mesh ------
+  tileCount = 50;
+  zScale = 150;
+
+  // ------ noise ------
+  noiseXRange = 10;
+  noiseYRange = 10;
+  octaves = 4;
+  falloff = 0.5;
+
+  // ------ mesh coloring ------
+  topColor = color(0, 0, 100);
+  midColor = color(75, 99, 63);
+  bottomColor = color(0, 0, 0);
+  strokeColor = color(180, 0);
+  threshold = 0.30;
+
+  // ------ mouse interaction ------
+  offsetX = 0;
+  offsetY = 0;
+  clickX = 0;
+  clickY = 0;
+  zoom = -300;
+  rotationX = 0;
+  rotationZ = 0;
+  targetRotationX = PI / 3;
+  targetRotationZ = 0;
+}
+
+function draw() {
+  background(180,100,50);
+  ambientLight(150);
+  
+  // ------ microbit data ------
+  
+   if (!port.opened()) {
+    connectBtn.html("Connect to micro:bit");
+    microBitConnected = false;
+  } 
+  else {
+    microBitConnected = true;
+    connectBtn.html("Disconnect");
+  }
+
+    if (port.opened() && !connectionInitialized) {
+      port.clear();
+      connectionInitialized = true;
+    }
+  
+   if (port.availableBytes() > 0) {
+      let data = port.readUntil("\n");
+      if (data) {
+        data = data.trim();
+        let values = data.split(",");
+        if (values.length == 4) {
+          microBitX = int(values[0]) + windowWidth / 2;
+          microBitY = int(values[1]) + windowHeight / 2;
+          microBitAState = values[2].toLowerCase() === "true";
+          microBitBState = values[3].toLowerCase() === "true";
+          updateButtonStates(microBitAState, microBitBState);
+        } else {
+          print("No se están recibiendo 4 datos del micro:bit");
+        }
+      }
+    }
+
+  // ------ set view ------
+  push();
+  translate(width * 0.05, height * 0.05, zoom);
+  
+  //En esta parte es complejo hacer el cambio puesto que son inputs juntos, por lo que un solo botón no es suficiente, lo que voy a hacer es eliminar el check.
+
+  rotationX += (targetRotationX - rotationX) * 0.25;
+  rotationZ += (targetRotationZ - rotationZ) * 0.25;
+  rotateX(-rotationX);
+  rotateZ(-rotationZ);
+
+  // ------ mesh noise ------
+    noiseXRange = microBitX / 100;
+    noiseYRange = microBitY / 100;
+
+
+  noiseDetail(octaves, falloff);
+  var noiseYMax = 0;
+
+  var tileSizeY = height / tileCount;
+  var noiseStepY = noiseYRange / tileCount;
+
+  for (var meshY = 0; meshY <= tileCount; meshY++) {
+    beginShape(TRIANGLE_STRIP);
+    for (var meshX = 0; meshX <= tileCount; meshX++) {
+
+      var x = map(meshX, 0, tileCount, -width / 2, width / 2);
+      var y = map(meshY, 0, tileCount, -height / 2, height / 2);
+
+      var noiseX = map(meshX, 0, tileCount, 0, noiseXRange);
+      var noiseY = map(meshY, 0, tileCount, 0, noiseYRange);
+      var z1 = noise(noiseX, noiseY);
+      var z2 = noise(noiseX, noiseY + noiseStepY);
+
+      noiseYMax = max(noiseYMax, z1);
+      var interColor;
+      colorMode(RGB);
+      var amount;
+      if (z1 <= threshold) {
+        amount = map(z1, 0, threshold, 0.15, 1);
+        interColor = lerpColor(bottomColor, midColor, amount);
+      } else {
+        amount = map(z1, threshold, noiseYMax, 0, 1);
+        interColor = lerpColor(midColor, topColor, amount);
+      }
+      fill(interColor);
+      stroke(strokeColor);
+      strokeWeight(0);
+      vertex(x, y, z1 * zScale);
+      vertex(x, y + tileSizeY, z2 * zScale);
+    }
+    endShape();
+  }
+  pop();
+  
+  if (falloff > 1.0) falloff = 1.0;
+  if (falloff < 0.0) falloff = 0.0;
+
+  if (keyCode == LEFT_ARROW) octaves--; //INPUT A
+  if (keyCode == RIGHT_ARROW) octaves++; //INPUT B
+  if (octaves < 0) octaves = 0;
+
+  if (zoom < -700) zoom = -700; // '+' //INPUT A + ALGO
+  if (zoom > -340) zoom = -340; // '-' //INPUT B + ALGO
+
+  if (key == 's' || key == 'S') saveCanvas(gd.timestamp(), 'png'); //TOUCH PERO JUANFERFRANCO ME PEGA
+  if (key == ' ') noiseSeed(floor(random(100000)));
+
+}
+
+function mousePressed() {
+  clickX = microBitX;
+  clickY = microBitY;
+  clickRotationX = rotationX;
+  clickRotationZ = rotationZ;
+}
+
+function keyReleased() {
+
+
+}
+
+function connectBtnClick() {
+    if (!port.opened()) {
+        port.open('MicroPython', 115200);
+    } else {
+        port.close();
+    }
+}
+
+function updateButtonStates(newAState, newBState) {
+  
+  if(microBitY <= 900)
+    {
+      
+  if(newAState)
+    {
+      falloff += 0.1
+      zoom += 20
+    }
+  else if(newBState)
+    {
+      falloff -= 0.1
+      zoom -= 20
+    }
+      
+    }
+  else if ( microBitY > 900) {
+    
+    if(newAState)
+      {
+        offsetX += 50 - clickX;
+      }
+    if(newBState)
+      {
+        offsetX -= 50 - clickX;
+      }
+    
+    targetRotationX = min(max(clickRotationX + offsetY / float(width) * TWO_PI, -HALF_PI), HALF_PI);
+    targetRotationZ = clickRotationZ + offsetX / float(height) * TWO_PI;
+  }
+
+     else if ( microBitY<900){
+       
+       offsetY +=50
+         console.log(offsetY)
+    
+    if(newAState)
+      {
+        offsetY -= 50 - clickX
+      }
+    if(newBState)
+      {
+        offsetY-= 50 - clickX
+      }
+    
+    targetRotationX = min(max(clickRotationX + offsetY / float(width) * TWO_PI, -HALF_PI), HALF_PI);
+    targetRotationZ = clickRotationZ + offsetX / float(height) * TWO_PI;
+  }
+  prevmicroBitAState = newAState;
+  prevmicroBitBState = newBState;
+}
+```
+
+## ⚠️⛔⚒️ Proceso de construcción ⚒️⛔⚠️
+
+- El proceso de construcción de está versión modificada no fue complejo puesto que la implementación del código nuevo no fue invasiva en ningún aspecto en el programa. Sin embargo, aprovechando que debía cambiar mi aplicación decidí mejorar su estructura puesto que en la unidad pasada había escrito la parte de leer los datos en draw(), por esto, decidí crear una nueva función donde pudiera meter la nueva lógica de lectura de la información del microbit. Una vez puesto este sucedió que no recibía ningún dato y despues de analizar el por qué entendí que fue que no había definido un vector que recibiera los datos concatenados.
+
+### 🧐🧪✍️ EXPERIMENTOS
+
+1.) 🐙 **¿Que pasa si checksum no existe?** 🐙
+
+Para empezar eliminé el dato desde el microbit editor
+
+<img width="657" height="300" alt="image" src="https://github.com/user-attachments/assets/2ce66504-b157-4c69-a091-8b2df211c89a" />
+
+Este es el resultado desde la consola de p5js, me parece IMPRESIONANTE por que se nota de una el rol que cumple check sum. Para dar más contexto, en este caso el microbit está totalmente QUIETO y recibe datos diferentes en x y y. Me habría gustado ver que cambiara el aState y bState pero no fue el caso, aunque me gustó mucho este experimento, realmente demuestra y justifica la estructura que deben tener los paquetes.
+
+En conclusión comprendo las ventajas que presentan los datos binarios, pero ese aumento en velocidad llega si y solo si se trabaja con estos datos de forma organizada por medio de checksum y headers para evitar que se salgan de control. Eliminar el check del header y el del checksum cuesta totalmente la funcionalidad de la aplicación. En particular me llama la atención la frecuencia con la que llegan paquetes que no cumplen con la condición del checksum.
+
+2.) 🐙 **¿Que pasa si no tiene un header?** 🐙
+
+Pues para empezar el checksum no daría lo que está pidiendo, pero también me gustaría ver el comportamiento particular en mi aplicación. Para esto modifique la aplicación para que no buscara el checksum ni el header
+
+<img width="670" height="333" alt="image" src="https://github.com/user-attachments/assets/7f36c52b-bcdd-4361-a70e-be45683da631" />
+
+No pensé que fuera a ser la gran cosa pero este experimento me demostró que un header es aquello que le da orden a los paquetes y que es una pieza fundamental del programa, me pone a pensar acerca la implementación de hex en nuestro código, por que a pesar de que es más rápido este requiere mucho más orden. También teniendo en cuenta que no tengo el checksum este experimento demuestra la volatilidad de los valores cuando no se delimita un paquete con el header y checksum.
+
+En parte este experimento va de la mano con el anterior, sin embargo en este me di cuenta que el checksum realmente solo funciona si hay un header, pues en cuyo caso de que si haya un checksum este solo hace que el paquete cumpla un tamaño predeterminado pero no va a saber cuando empieza o termina.
+
+3.) 🐙 **¿Que pasa si cambio los valores del array que reciben las variables?** 🐙
+
+Esta esta línea de código, la cual es la que se encarga ya de asignar los valores recibidos y convertidos a las variables que utilizamos en p5js.
+
+<img width="444" height="94" alt="image" src="https://github.com/user-attachments/assets/4a4821a1-177a-46fd-9a09-672be76eba8f" />
+
+Desde un principio me parecieron valores muy arbitrarios entonces me dió por cambiarlos a algo que tendría más sentido para mi.
+
+Este fue el resultado:
+
+<img width="629" height="208" alt="image" src="https://github.com/user-attachments/assets/75d184cb-8659-40fc-b668-b82105f555ed" />
+
+Para entender que está sucediendo me gustaría volver a la estructura de nuestro paquete <img width="179" height="19" alt="image" src="https://github.com/user-attachments/assets/be6bee5b-975a-4bb6-9bcb-6885ab8b109f" /> y que es lo que está pasando en p5js. En un principio se entiende que el primer dato en binario es el header, en p5js, se chequea y se crea un nuevo array para guardar los valores "reales". El último dato corresponde al checksum el cual se utiliza para chequear que si se hayan recibido los bytes de un paquete completo. Cuando vi los valores que se extraian del array dataBytes me parecieron muy arbitrarios pero ya haciendo este analisis entiendo que esta estructura está totalmente justificada.
+
+```js
+    microBitX = view.getInt16(0); //donde 0 y 1 son los datos correspondientes a microBitX, por eso se utilizar getInt16, para conseguir ambos bytes.
+    microBitY = view.getInt16(2); //lo mismo pero con 2 y 3
+    microBitAState = view.getUint8(4) === 1; //acá son un solo byte por que es un bool y solo recibe dos datos 1 y 0, este valor de bool está dado con la expresión === 1 que me ENCANTA.
+    microBitBState = view.getUint8(5) === 1; // lo mismo.
+```
+
+## Reflect
+
+- 1.) **Realiza una tabla donde compares, según la aplicación que modificaste en la fase de aplicación de ambas unidades, los siguientes aspectos: eficiencia, velocidad, facilidad**
+
+| APLICACIÓN | EFICIENCIA | VELOCIDAD | FACILIDAD |
+|------|--------|---------|-------|
+| **Binario** | Es mucho más eficiente que la anterior, de pronto en una cantidad imperceptible pero imagino que el computador no tenga que traducir para interpretarlo juega un rol grande | Este es mucho más rápido, no solo en lo anterior sino que yo personalmente cambié la velocidad a la que manda datos de 100ms a 10ms (el cual al parecer es el mínimo, más pequeño crashea) esto lo comprobé utilizando SerialTerminal el cual claramente mostraba la diferencia | La implementación es más compleja y menos intuitiva, más que todo por que  2 de los 8 datos que se reciben no son "tangibles" por decirlo de alguna forma. Es la única desventaja que encontré de Binario.|
+| **ASCII** | Es eficiente y encima no hay que utilizar sleep para el envio de datos, esto puede ser un pro a favor de ASCII, sin embargo si noté que era menos eficiente que binario, esto lo comprobé utilizando SerialTerminal, donde observé que a pesar de que si mandaba muchos datos por segundo eran menos que el otro. | Más lento que el otro, sin duda alguna | Mucho más fácil de comprender e implementar, debido a que no se utiliza binario es mucho más fácil comprender los datos que llegan por lo que es una aplicación más fácil de manejar |
+
+- 2.) **¿Por qué fue necesario introducir framing en el protocolo binario?**
+
+    - Por que de esa forma se pueden organizar los paquetes que se envian para que el computador no confunda los valores que recibe, de no tener esto se pueden recibir paquetes incompletos o con información inconsistente.
+
+- 3.) **¿Cómo funciona el framing?**
+    
+    - Tiene dos elementos fundamentales, el header y el checksum. El header se encarga de marcar el principio de un paquete, para que sepa cuando termina y empieza uno. El checksum se encarga de que el paquete si cumpla con el tamaño adecuado. 
+ 
+- 4.) **¿Qué es un carácter de sincronización?**
+
+    - Un carácter de sincronización creooooo que se refiere a aquellos que definen cuando empieza o acaba un paquete, entonces en realidad se refiere a un header.
+
+- 5.) **¿Qué es el checksum y para qué sirve?**
+
+    - El checksum sirve para saber la cantidad de bytes que tiene un paquete, si un paquete está completo entonces significa que satisface la cantidad de información que debe tener.
+
+- 6.) **En la función readSerialData() del programa en p5.js:**
+    
+    - ¿Qué hace la función concat? ¿Por qué?
+        
+        - concat se encarga de concatenar aquella información que llega dividida.
+    
+    - En la función readSerialData() tenemos un bucle que recorre el buffer solo si este tiene 8 o más bytes ¿Por qué?
+        
+        - Por que en caso de que tenga menos eso significa que el paquete no viene completo.   
+## Autoevaluación
+
+Nota general: 4.6/5
+
+- **Profundidad de la indagación 5/5**
+   - En varios aspectos de la unidad me propuse investigar de mas, como funciona la traducción de binario a texti y vicebersa y experimentos adicionales en las diferentes actividades, por lo que considero que si fui mas alla de hacer lo que proponía la unidad como tal. Un ejemplo de donde hice esto fue durante la realización y analisis de los experimentos y las actividades propuestas.
+
+- **Calidad de la experimentación 5/5**
+   - A pesar de que no hice cambios o propuestas diferentes en los experimentos que se proponían en la unidad pienso que en carias ocaciones mi análisis fue más allá y busqué en diferentes fuentes para confirmar mis observaciones e hipótesis, de esta forma pienso que la calidad de mi experimentación fue adecuada pero más que eso pienso que logré comprender los conceptos por los análisis profundos que hice de los experimentos.
+
+- **Análisis de reflexión 4/5**
+   - Precisamente por lo que mencioné en el punto anterior pienso que mi punto fuerte en esta unidad fue mi reflexión con respecto a los puntos que se proponían, me gustaría mencionar que esto se dió por que me parecieron muy pertinentes y cada experimento nuevo exploraba aspectos que aún no había explorado o no comprendía por completo, es por esto que pienso que mi reflexión fue buena, puesto que los experimentos me obligaban a cambiar y mejorar mis preguntas para así entender mejor los conceptos. Un ejemplo de esto fueron los experimentos en los que investigué aspectos los cuales me permitían comprender mejor los conceptos vistos.
+  
+- **Apropiación y articulación de conceptos 5/5**
+   - Siento que comprendí a profundidad los conceptos de la unidad, no solo por que eran simoles sino también por que los experimentos que propuse al final realmente demostraron un análisis completo de aquello que proponía la unidad, es por esto y también por mi realización de las demás actividades que puedo decir con seguridad que los conceptos y su articulación en esta unidad fue completa.
+
+
+
