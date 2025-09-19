@@ -931,5 +931,11 @@ Para entender que está sucediendo me gustaría volver a la estructura de nuestr
     - En la función readSerialData() tenemos un bucle que recorre el buffer solo si este tiene 8 o más bytes ¿Por qué?
         
         - Por que en caso de que tenga menos eso significa que el paquete no viene completo.   
+## Autoevaluación
+
+- Profundidad de la indagación 5/5
+   - En varios aspectos de la unidad me propuse investigar de mas, como funciona la traducción de binario a texti y vicebersa y experimentos adicionales en las diferentes actividades, por lo que considero que si fui mas alla de hacer lo que proponía la unidad como tal. Un ejemplo de donde hice esto fue durante la realización y analisis de los experimentos y las actividades propuestas.
+
+- 
 
 
