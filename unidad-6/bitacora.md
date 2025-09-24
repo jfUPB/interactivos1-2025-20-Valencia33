@@ -3,6 +3,8 @@
 
 ___
 
+## Actividad 1
+
 **PASOS**
 
   - copiar la URL del repo para clonarlo.
@@ -48,3 +50,60 @@ significa que el servidor está escuchando los datos que va a mandar esa página
 
     <img width="517" height="560" alt="image" src="https://github.com/user-attachments/assets/7167eda7-141d-44a0-810c-223a44aec4be" />
 
+___
+
+## Actividad 2
+
+### ¿Qué es Internet?
+
+- **Piensa en cómo te conectas a Internet en casa o en la Universidad. ¿Usas Wi-Fi? ¿Un cable de red? Eso es simplemente tu “rampa de acceso” a la gran red de carreteras. ¿Qué pasaría si esa rampa se corta? Anota tus ideas.**
+
+  - Utilizo un cable de red, que tengo entendido es una fibra optica y eso es como magia negra que manda información con pulsaciones de luz pero creo que estoy completamente equivocado, si esa rampa se corta entonces me imagino que ya mi computador no manda ni recibe información por lo que no puede actualizar paginas ni mandar ningún tipo de dato como archivos y tales, todo debe ser interno.
+ 
+### Navegador y servidor 
+
+- **¿Puedes identificar otros ejemplos de relaciones Cliente-Servidor en tu vida diaria (no necesariamente digitales)? Por ejemplo, al pedir comida en un restaurante. ¿Quién es el cliente y quién el servidor? ¿Qué se pide y qué se entrega?**
+
+  - Pues justo ahora para taller estoy montando un jueguito multiplayer y en últimas todo recae en esta relación cliente - servidor, de forma en la que los clientes tienen un par de "atributos" que le muestran al servidor y este se encarga de compartir esa información con todos, un ejemplo más específico es con la posición, pues un cliente la actualiza en todo momento pero es un proceso local, realmente solo está cambiando su posición propia por lo que para ver los cambios de posición de los demás debe pedirle esa información al servidor.
+
+### ¿Qué es una URL?
+
+<img width="1013" height="251" alt="image" src="https://github.com/user-attachments/assets/b0545bbe-9a13-4ce1-9c79-ad7213188fe4" />
+
+- **Toma la URL de tu sitio web favorito. Intenta identificar el protocolo, el nombre de dominio y la ruta (si la hay). ¿Qué crees que pasa si solo escribes el nombre de dominio (ej. www.google.com) sin una ruta específica? ¿Qué “página por defecto” crees que te envía el servidor?**
+
+  - mi sitio web favorito es el [perfil de p5js de juanferfranco](https://editor.p5js.org/juanferfranco/sketches) cuyo link es el siguiente https://editor.p5js.org/juanferfranco/sketches, donde el **https://** son las reglas del idioma con el que van a hablar, **editor.p5js.org** es la dirección física de donde estoy y el **/juanferfranco/sketches** es la dirección de donde estoy dentro de ese lugar.
+ 
+### Protocolo HTTP
+
+**Compara HTTP con los protocolos seriales que usaste.**
+
+- **¿Qué similitudes encuentras?**
+
+  - Pues encuentro que en ambos hay un envio de datos y que no existe ninguna traducción puesto que ambos hablan el mismo "idioma". 
+
+- **¿Qué diferencias clave ves?**
+
+  - Más allá de que son lenguajes diferentes lo que más me llama la atención es que se debe de pedir la información y el servidor lo debe de aprobar. 
+
+- **¿Por qué crees que HTTP necesita ser más complejo que un simple envío de bytes como hacías con el micro:bit?**
+
+  - Yo diría que es por que debe de seguir una especie de "jerarquía" de ver que le manda o que no al cliente, a la misma vez que debe evaluar quien es el cliente y de donde viene, por lo que mandar inforamción a la loca sin verificar no sería lo ideal. Además de esto el semestre pasado nos mostraron que una página es una melcocha de varios lenguajes, por lo que me imagino que tendrá que hacer algo distinto para mandar toda la información correspondiente a cada elemento.
+ 
+### HTML, CSS y JavaScript
+
+<img width="833" height="381" alt="image" src="https://github.com/user-attachments/assets/323c4c06-df6d-4de4-b41a-e9cc255d26c4" />
+ 
+**Piensa en una página web simple, como un formulario de login.**
+
+-**¿Qué parte crees que es HTML (ej. los campos de texto, el botón)?**
+
+  - Diría que los titulos e información que ponga ahí en la caja de texto, los botones y los inputs field.
+
+-**¿Qué parte es CSS (ej. el color del botón, el tipo de letra)?**
+
+  - Toda la parte visual como el header, la fuente, el color del fondo y demás efectos como el feedback de si se equivoca.
+
+-**¿Qué parte es JavaScript (ej. la comprobación de si escribiste algo antes de enviar, el mensaje de “contraseña incorrecta” que aparece sin recargar la página)?**
+
+  - El chequeo de que no esté vacio, sea correcto y todo eso se debe hacer desde acá puesto que pide información de una base de datos adicional.
