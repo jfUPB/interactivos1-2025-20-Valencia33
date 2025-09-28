@@ -107,3 +107,27 @@ ___
 -**¿Qué parte es JavaScript (ej. la comprobación de si escribiste algo antes de enviar, el mensaje de “contraseña incorrecta” que aparece sin recargar la página)?**
 
   - El chequeo de que no esté vacio, sea correcto y todo eso se debe hacer desde acá puesto que pide información de una base de datos adicional.
+
+### ¿Cómo se ejecuta JavaScript?
+
+- **¿Qué ventajas crees que tiene el modelo basado en eventos para una interfaz de usuario web?**
+
+  - Pues la ventaja principal que se me ocurre es que solamente está funcionando cuando debería funcionar, y no está constantemente actualizando incluso si no hay cambios, encima solo reacciona cuando hay algo relevante. 
+
+- **¿Sería eficiente tener un bucle draw() redibujando toda la página 60 veces por segundo si nada ha cambiado?**
+
+  - No lo sería para nada, sería mucho trabajo para esencialmente mostrar la misma información que el frame pasado. 
+
+### ¿Qué es Node.js?
+
+- **¿Por qué crees que podría ser útil usar JavaScript tanto en el cliente (navegador) como en el servidor? ¿Se te ocurre alguna ventaja para los desarrolladores?**
+
+  - Pues me imagino que lo principal son dos cosas; la primera es la utilización de un modelo basado en eventos, y lo otro es que debe de haber algún tipo de ventaja en utilizar el mismo lenguaje en esa relación cliente - servidor.
+
+### WebSockets y Socket.IO
+
+- **Resume con tus propias palabras la diferencia fundamental entre una comunicación HTTP tradicional y una comunicación usando WebSockets/Socket.IO. ¿En qué tipo de aplicaciones has visto o podrías imaginar que se usa esta comunicación en tiempo real?**
+
+  - Pues HTTP tiene que pedir PERMISO para hacer algo, entonces si se necesita recibir información cada segundo pedir permiso siempre no es lo ideal, por eso se usa websockets, que establece una relación constante con la información que se necesite. Y en que tipo de apliación me puedo imaginar eso, sería en cualquier videojuego competitivo, donde se necesita conocer la posición exacta de todos los jugadores cada segundo para que sea justo para todos, me imagino que ahí el cliente comparte información con el servidor y viceversa sin pedir permiso.
+ 
+## Actividad 3 
