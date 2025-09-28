@@ -131,3 +131,53 @@ ___
   - Pues HTTP tiene que pedir PERMISO para hacer algo, entonces si se necesita recibir información cada segundo pedir permiso siempre no es lo ideal, por eso se usa websockets, que establece una relación constante con la información que se necesite. Y en que tipo de apliación me puedo imaginar eso, sería en cualquier videojuego competitivo, donde se necesita conocer la posición exacta de todos los jugadores cada segundo para que sea justo para todos, me imagino que ahí el cliente comparte información con el servidor y viceversa sin pedir permiso.
  
 ## Actividad 3 
+
+### 🧐🧪✍️ Experimento 1
+
+- **Intenta acceder a http://localhost:3000/page1. ¿Funciona?**
+
+  - Si
+
+- **Ahora intenta acceder a http://localhost:3000/pagina_uno. ¿Funciona?**
+
+  - No
+
+- ¿Qué te dice esto sobre cómo el servidor asocia URLs con respuestas? Restaura el código.
+
+  - Pues me da a entender que es totalmente comprensible que el cliente esté en la dirección que debe estar para solicitar cierta información, mi predicción es que el cliente llega a la dirección que es, pide permiso con HTTP y despues de eso son puros WebSockets.
+
+### 🧐🧪✍️ Experimento 2
+
+- **Abre http://localhost:3000/page1 en una pestaña. Observa la terminal del servidor. ¿Qué mensaje ves? Anota el ID.**
+
+  -  A user connected - ID: xf4drihvAkxir066AAAJ
+
+- **Abre http://localhost:3000/page2 en OTRA pestaña. Observa la terminal. ¿Qué mensaje ves? ¿El ID es diferente?**
+
+  - A user connected - ID: KS_ILIa6d863UpXyAAAN
+ 
+- **Cierra la pestaña de page1. Observa la terminal. ¿Qué mensaje ves? ¿Coincide el ID con el que anotaste?**
+
+  - User disconnected - ID: HSRvE1Gz8iNomJTeAAAL 
+
+- **Cierra la pestaña de page2. Observa la terminal.**
+
+  - User disconnected - ID: KS_ILIa6d863UpXyAAAN
+
+### 🧐🧪✍️ Experimento 3
+
+- **Inicia el servidor y abre page1 y page2.** 
+
+- **Mueve la ventana de page1. Observa la terminal del servidor. ¿Qué evento se registra (win1update o win2update)? ¿Qué datos (Data:) ves?**
+
+  -  Received win1update from ID: fWJWdmaFLYw2DpGrAAAB Data: { x: 937, y: 361, width: 958, height: 987 }
+
+- **Mueve la ventana de page2. Observa la terminal. ¿Qué evento se registra ahora? ¿Qué datos ves?**
+
+  - Received win2update from ID: dZsHSLSNiLGb-GJJAAAD Data: { x: 187, y: 22, width: 958, height: 987 }
+
+- **Experimento clave: cambia socket.broadcast.emit(‘getdata’, page1); por socket.emit(‘getdata’, page1); (quitando broadcast). Reinicia el servidor, abre ambas páginas. Mueve page1. ¿Se actualiza la visualización en page2? ¿Por qué sí o por qué no? (Pista: ¿A quién le envía el mensaje socket.emit?). Restaura el código a broadcast.emit.**
+
+  -  
+
+ 
