@@ -180,4 +180,10 @@ ___
 
   -  
 
+## Actividad 5
+
+Mi idea para esta actividad es hacer un acuario por que me gustan mucho los pescados, entonces lo que tengo pensado hacer es una pecera que tiene varios pescados y estos pueden viajar entre las pestañas, esto no tiene absolutamente nada de interactivo entonces voy a ahcer que si el mouse le pasa por encima entonces voltean y cambian su velocidad brevemente.
+
+COMO VOY A HACER ESTO? ni idea, hasta ahora se me ocurre una clase pescado donde sobreescribo update y draw, y en setup tengo un array de pescados y cada frame llama update y draw, ni idea como van a viajar entre pestañas pero eso es un problema para despues.
  
+
