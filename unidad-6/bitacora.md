@@ -186,4 +186,37 @@ Mi idea para esta actividad es hacer un acuario por que me gustan mucho los pesc
 
 COMO VOY A HACER ESTO? ni idea, hasta ahora se me ocurre una clase pescado donde sobreescribo update y draw, y en setup tengo un array de pescados y cada frame llama update y draw, ni idea como van a viajar entre pestañas pero eso es un problema para despues.
  
+Bueno lo primero y más importante sería la clase Pescado, en general me gustaría que se moviera de izquierda a derecha (o al revés), que tengan diferentes tamaños y colores. En ese caso las variables que se me ocurren son x, y, color, size, speed y direction.
 
+<img width="451" height="175" alt="image" src="https://github.com/user-attachments/assets/6b82a39b-844c-456c-8675-996cd901228c" />
+
+Lo siguiente sería decirle que va hacer cada frame en update y draw. en update diría que solo va la lógica de movimiento, es decir, incrementar la posición en x cierta cantidad, que sería speed. IMPORTANTE, que casi se me olvida y es q se multiplique por direction, que idealmente solo tiene dos valores: 1 y -1.
+
+<img width="363" height="71" alt="image" src="https://github.com/user-attachments/assets/6798cf97-75b8-4853-ab78-03dd51cfadea" />
+
+Y despues sigue el draw, que me da miedo pq no se me ocurre una forma de mover la ellipse (no quiero dibujar un pescado aún) entonces voy a buscar. 
+
+se me ocurre una forma muy rara de hacerlo pero se la voy a copiar a un señor y es que el man basicamente usa push(), translate() y pop() para que solo afecte la transformación a ese pescadito, mi otra opción era mover cada cordenada de la elipse por x, PERO en un futuro quiero que hagan como una función seno entonces me parece mejor translate.
+
+<img width="378" height="183" alt="image" src="https://github.com/user-attachments/assets/92246342-8805-489d-b0fa-30fbffcc8c29" />
+
+tengo un problemita y es que direction lo iba a crear con un random() pero entonces eso puede provocar que sea cero entonces se me ocurrio un pequeño if
+
+<img width="326" height="196" alt="image" src="https://github.com/user-attachments/assets/3bb65312-8253-403c-9ad9-501ee3c7b048" />
+
+BUENO, ahora hay que crear los pescados en setup y llamar sus metodos draw y setup cada frame, AFORTUNADAMENTE, juanferfranco ya ha hecho esto entonces le voy a copiar.
+
+<img width="1249" height="113" alt="image" src="https://github.com/user-attachments/assets/aaa5e89e-6613-4a7e-b30b-0af17dfa095d" />
+
+por mas que me doliera gemini me enseño a poner un "foreach" en p5js
+
+<img width="295" height="88" alt="image" src="https://github.com/user-attachments/assets/a0a8dc15-78b8-463a-9b48-188174073739" />
+
+Ahora toca que un pescado pase de una página a otra ![87e65f7510d7349e2f3e45210c8a60f1](https://github.com/user-attachments/assets/2668352b-871e-46a7-8e40-d6f8792d0af5)
+
+ENTONCES, en mi mente hay que tener en cuenta alguna cositas para poner un pescado en la otra pantalla.
+
+- es un pescado totalmente nuevo para la otra página entonces en algún momento va a tener que instanciar un pescado.
+- ese pescado va a tener que ser identico al que salió de la otra página, lo que significa que de alguna forma voy a tener QUE tener acceso al pescado que salió de la pantalla.
+- no solo eso sino que (idealmente mi aplicación corre en dos ventanas del mismo tamaño) pero la posición del pescado tendrá que tener una posición proporcional al anterior pescado (yo me entiendo).
+- voy a tener que saber cuando un pescado sale de una pantalla para eliminarlo.
