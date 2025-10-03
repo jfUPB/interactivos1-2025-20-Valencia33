@@ -765,7 +765,7 @@ function SendFishToOtherPage(pescadito) {
 ```
 
 **server**
-```
+```js
 const express = require('express');
 const http = require('http');
 const socketIO = require('socket.io');
@@ -881,3 +881,8 @@ server.listen(port, () => {
     console.log(`Server is listening on http://localhost:${port}`);
 });
 ```
+
+<img width="1919" height="902" alt="image" src="https://github.com/user-attachments/assets/051ae408-2a18-4cb6-a235-8bf255c6eaed" />
+
+<img width="1886" height="737" alt="image" src="https://github.com/user-attachments/assets/96835871-a21d-4ddf-8021-1e736603f8a2" />
+
