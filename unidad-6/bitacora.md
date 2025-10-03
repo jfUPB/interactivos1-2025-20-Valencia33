@@ -220,3 +220,53 @@ ENTONCES, en mi mente hay que tener en cuenta alguna cositas para poner un pesca
 - ese pescado va a tener que ser identico al que salió de la otra página, lo que significa que de alguna forma voy a tener QUE tener acceso al pescado que salió de la pantalla.
 - no solo eso sino que (idealmente mi aplicación corre en dos ventanas del mismo tamaño) pero la posición del pescado tendrá que tener una posición proporcional al anterior pescado (yo me entiendo).
 - voy a tener que saber cuando un pescado sale de una pantalla para eliminarlo.
+
+para hacer esto tengo q saber como manda datos esto, ya más temprano comentando esa línea de codigo medio intuí que socket es el responsable de esa relación cliente-servidor.
+
+<img width="560" height="157" alt="image" src="https://github.com/user-attachments/assets/72e8a04e-8b20-44f0-9f38-21255a953e9e" />
+
+<img width="480" height="186" alt="image" src="https://github.com/user-attachments/assets/2357816b-957f-4cbd-abcb-03559859c11c" />
+
+lo anterior era mentira estoy haciendo el apply antes q el final de la otra actividad PERO para mandar info se usa emit y la nomenclatura es como  "tintintin", data, y data en este caso sería la info del pescado. No sé si haya alguna forma de empaquetarlo para que no mas sea mandar data pero ahí mismo en elcaso de estudio manda mucha información como parametro entonces voy a hacer justo eso, PERO PRIMERO, la página necesita saber cuando mandar un pescado, y ese cuando va a ser cuando esté por fuera de la pantalla.
+
+eso es muy facil no mas es coger el widht, sumarle el tamaño del bicho y si eso es true entonces sale.
+
+importante tener en cuenta que en su eje mayor un rectangulo tiene dos lados, tambien hay q poner que si es menor q su tamaño por el otro lado devuelve true.
+
+por últime juanferfranco estaría orgulloso de que hice un método completamente nuevo 
+
+<img width="319" height="117" alt="image" src="https://github.com/user-attachments/assets/1f680df9-eccf-4f1e-b4af-83bc182a94a3" />
+
+ahora lo que sigue es llamar este método cada frame, y si devuelve true entonces LLAMA el método que manda la información.
+
+<img width="275" height="67" alt="image" src="https://github.com/user-attachments/assets/cc3e7bd8-5d85-4dd2-b311-4e14600591d1" />
+
+es la mejor forma de implementarlo que se me ocurrió, no creo que sea tan pesado.
+
+<img width="289" height="113" alt="image" src="https://github.com/user-attachments/assets/aa38f5bf-1546-460c-b969-923c9fcbd612" />
+
+el tema con el color es que al parecer tratar un color como normalmente lo trataría en p5js no es posible, hay que dividirlo, aofrtunamaete p5js tiene un cosito que es color.levels que devuelve un array con los valores rgb (o de cualquier otra configuracion de color).
+
+otra cosa importante q dejé a lo último pq me da miedo es que hay que encontrar la forma de saber a q "altura" va a spawnear el otro pescado, entonces yo diría que sería transformar la altura actual del pescado a un valor entre 1 y 0, y depsues multiplicar la altura del otro cosito por ese número.
+
+esto si lo he hecho mil veces pq me niego a usar la función que especificamente hace eso, pero basicamente sería como (número en el rango / total del rango) * total del otro rango. en mi caso eso sería, la posición del bicho y las alturas de cada pagina.
+
+<img width="630" height="23" alt="image" src="https://github.com/user-attachments/assets/244a9be0-ae89-42fb-9f5b-49d05e8d6b7f" />
+
+<img width="584" height="206" alt="image" src="https://github.com/user-attachments/assets/a889b36a-f54c-47e0-ba7c-a8eefcce9144" />
+
+ahora, lo que falta es que la otra pagina lo reciba y lo spawnee
+
+pero pa eso hay que hacer que cuando el servidor lo reciba lo mande.
+
+<img width="417" height="76" alt="image" src="https://github.com/user-attachments/assets/942d3d39-25a3-4a70-8e7f-e603d5dd541e" />
+
+bueno se me olvidó un detalle y es que tambien le tengo q dar una posición en x al pescadito, pero es facil pq la dirección me dice por que lado salío, entonces si x > 0 eso significa que salió por la derecha entonces su salida en x debería ser instanciado por el lado izquierdo. tambine hay que tener en cuenta que no quiero que aparezacn asi de la nada entonces los voy a soawnear un poquito mas afuera.
+
+como su tamaño es máximo 60 entonces los voy a mandar a 70 pq no quiero q se vean ahí mismo.
+
+<img width="548" height="318" alt="image" src="https://github.com/user-attachments/assets/fc9b388a-b743-4954-9062-ace5b473ff6b" />
+
+<img width="1286" height="856" alt="image" src="https://github.com/user-attachments/assets/3e2b7434-b005-4112-b4f7-faa98a3009cc" />
+
+maravilloso, no pasa nada, justo lo que quería.
