@@ -286,3 +286,598 @@ mas o menos solucionado, pasa UN solo pescado.
 FUNCIONA (puse una coma donde no debía)
 
 <img width="1290" height="864" alt="image" src="https://github.com/user-attachments/assets/f1fbe0c9-853b-4e88-a60f-c075e9231cc6" />
+
+listo genial pero no tiene nada de interactivo y los pescados son muy feos, entonces voy a hacer que si el mouse les pasa por encimita les cambie la dirección, gracias a dios p5js tiene una funcion de distancia, ent si esa distancia es menos al tamaño del pescado se gira
+
+<img width="613" height="263" alt="image" src="https://github.com/user-attachments/assets/33863def-e69d-4513-8d61-d49c30e2513b" />
+
+
+**page 1**
+```js
+let currentPageData = {
+  x: window.screenX,
+  y: window.screenY,
+  width: window.innerWidth,
+  height: window.innerHeight
+};
+
+let previousPageData = { ...currentPageData };
+
+let remotePageData = { x: 0, y: 0, width: 100, height: 100 };
+let point1 = [currentPageData.width / 2, currentPageData.height / 2];
+let socket;
+let isConnected = false;
+let hasRemoteData = false;
+let isFullySynced = false;
+
+let pescados = [];
+let nextFishId = 0;
+
+class Pescado {
+  constructor(id, x, y, size, color, speed, direction) {
+    this.id = id;
+    this.x = x;
+    this.y = y;
+    this.size = size;
+    this.color = color;
+    this.speed = speed;
+    this.direction = direction;
+  }
+
+  update() {
+    this.x += this.speed * this.direction;
+  }
+
+  draw() {
+    push();
+    translate(this.x, this.y);
+    scale(this.direction < 0 ? -1 : 1, 1);
+    fill(this.color);
+    ellipse(0, 0, this.size * 2, this.size);
+    triangle(-20, 0, -this.size, -this.size / 2, -this.size, this.size / 2);
+    fill(255);
+    circle(10, 0, 30);
+    fill(0);
+    circle(10, 0, 10);
+    pop();
+  }
+
+  IsOffScreen() {
+    return (
+      this.x > width + this.size * 2 ||
+      this.x < -this.size * 2
+    );
+  }
+
+  checkHover(mx, my) {
+    let distance = dist(mx, my, this.x, this.y);
+    return distance < this.size;
+  }
+
+  flipDirection() {
+    this.direction *= -1;
+  }
+
+}
+
+function setup() {
+  createCanvas(windowWidth, windowHeight);
+  frameRate(60);
+  socket = io();
+
+  socket.on('connect', () => {
+    console.log('Connected with ID:', socket.id);
+    isConnected = true;
+    socket.emit('win1update', currentPageData, socket.id);
+
+    setTimeout(() => {
+      socket.emit('requestSync');
+    }, 500);
+  });
+
+  socket.on('getdata', (response) => {
+    if (response && response.data && isValidRemoteData(response.data)) {
+      remotePageData = response.data;
+      hasRemoteData = true;
+      console.log('Received valid remote data:', remotePageData);
+      socket.emit('confirmSync');
+    }
+  });
+
+  socket.on('fullySynced', (synced) => {
+    isFullySynced = synced;
+    console.log('Sync status:', synced ? 'SYNCED' : 'NOT SYNCED');
+  });
+
+  socket.on('peerDisconnected', () => {
+    hasRemoteData = false;
+    isFullySynced = false;
+    console.log('Peer disconnected, waiting for reconnection...');
+  });
+
+  socket.on('disconnect', () => {
+    isConnected = false;
+    hasRemoteData = false;
+    isFullySynced = false;
+    console.log('Disconnected from server');
+  });
+
+  socket.on('recibirPescado', (data) => {
+    let startX = (data.direction > 0) ? -50 : width + 50;
+
+    let fishColor = color(data.color[0], data.color[1], data.color[2]);
+
+    let _pescaoNuevo = new Pescado(
+      data.id,
+      startX,
+      data.y,
+      data.size,
+      fishColor,
+      data.speed,
+      data.direction
+    );
+    pescados.push(_pescaoNuevo);
+  });
+
+   for (let i = 0; i < 20; i++) {
+    let size = random(20, 60);
+    let pescadito = new Pescado(nextFishId++, random(width), random(height), size, color(0, random(50, 255), random(50, 120)), random(1, 3), random([1, -1]));
+    pescados.push(pescadito);
+  }
+}
+
+function isValidRemoteData(data) {
+  return (
+    data &&
+    typeof data.x === 'number' &&
+    typeof data.y === 'number' &&
+    typeof data.width === 'number' &&
+    data.width > 0 &&
+    typeof data.height === 'number' &&
+    data.height > 0
+  );
+}
+
+function checkWindowPosition() {
+  currentPageData = {
+    x: window.screenX,
+    y: window.screenY,
+    width: window.innerWidth,
+    height: window.innerHeight
+  };
+
+  if (
+    currentPageData.x !== previousPageData.x ||
+    currentPageData.y !== previousPageData.y ||
+    currentPageData.width !== previousPageData.width ||
+    currentPageData.height !== previousPageData.height
+  ) {
+    point1 = [currentPageData.width / 2, currentPageData.height / 2];
+    socket.emit('win1update', currentPageData, socket.id);
+    previousPageData = currentPageData;
+  }
+}
+
+
+function draw() {
+  background(0, 100, 200);
+
+  checkWindowPosition();
+
+  if (!isConnected) {
+    showStatus('Conectando al servidor...', color(255, 165, 0));
+    return;
+  }
+
+  if (!hasRemoteData) {
+    showStatus('Esperando conexión de la otra ventana...', color(255, 165, 0));
+    return;
+  }
+
+  if (!isFullySynced) {
+    showStatus('Sincronizando datos...', color(255, 165, 0));
+    return;
+  }
+
+  for (let pescadito of pescados) {
+  if (pescadito.checkHover(mouseX, mouseY)) {
+    pescadito.flipDirection();
+  }
+}
+
+  for (let pescadito of [...pescados]) {
+    pescadito.update();
+    pescadito.draw();
+
+    if (pescadito.IsOffScreen()) {
+      SendFishToOtherPage(pescadito);
+    }
+  }
+}
+
+function showStatus(message, statusColor) {
+  textSize(24);
+  textAlign(CENTER, CENTER);
+  noStroke();
+  fill(0, 0, 0, 150);
+  rectMode(CENTER);
+  let textW = textWidth(message) + 40;
+  let textH = 40;
+  rect(width / 2, height / 6, textW, textH, 10);
+  fill(statusColor);
+  text(message, width / 2, height / 6);
+}
+
+function windowResized() {
+  resizeCanvas(windowWidth, windowHeight);
+}
+
+function SendFishToOtherPage(pescadito) {
+  let y = (pescadito.y / currentPageData.height) * remotePageData.height;
+  let col = pescadito.color.levels;
+  socket.emit('sendPescado', {
+  id: pescadito.id,
+  y: y,
+  size: pescadito.size,
+  color: [col[0], col[1], col[2]],
+  speed: pescadito.speed,
+  direction: pescadito.direction
+});
+
+  pescados = pescados.filter((p) => p.id !== pescadito.id);
+}
+```
+
+**page 2**
+```js
+let currentPageData = {
+  x: window.screenX,
+  y: window.screenY,
+  width: window.innerWidth,
+  height: window.innerHeight
+};
+
+let previousPageData = { ...currentPageData };
+
+let remotePageData = { x: 0, y: 0, width: 100, height: 100 };
+let point1 = [currentPageData.width / 2, currentPageData.height / 2];
+let socket;
+let isConnected = false;
+let hasRemoteData = false;
+let isFullySynced = false;
+
+let pescados = [];
+let nextFishId = 0;
+
+class Pescado {
+  constructor(id, x, y, size, color, speed, direction) {
+    this.id = id;
+    this.x = x;
+    this.y = y;
+    this.size = size;
+    this.color = color;
+    this.speed = speed;
+    this.direction = direction;
+  }
+
+  update() {
+    this.x += this.speed * this.direction;
+  }
+
+  draw() {
+    push();
+    translate(this.x, this.y);
+    scale(this.direction < 0 ? -1 : 1, 1);
+    fill(this.color);
+    ellipse(0, 0, this.size * 2, this.size);
+    triangle(-20, 0, -this.size, -this.size / 2, -this.size, this.size / 2);
+    fill(255);
+    circle(10, 0, 30);
+    fill(0);
+    circle(10, 0, 10);
+    pop();
+  }
+
+  IsOffScreen() {
+    return (
+      this.x > width + this.size * 2 ||
+      this.x < -this.size * 2
+    );
+  }
+
+  checkHover(mx, my) {
+    let distance = dist(mx, my, this.x, this.y);
+    return distance < this.size;
+  }
+
+  flipDirection() {
+    this.direction *= -1;
+  }
+
+}
+
+function setup() {
+  createCanvas(windowWidth, windowHeight);
+  frameRate(60);
+  socket = io();
+
+  socket.on('connect', () => {
+    console.log('Connected with ID:', socket.id);
+    isConnected = true;
+    socket.emit('win2update', currentPageData, socket.id);
+
+    setTimeout(() => {
+      socket.emit('requestSync');
+    }, 500);
+  });
+
+  socket.on('getdata', (response) => {
+    if (response && response.data && isValidRemoteData(response.data)) {
+      remotePageData = response.data;
+      hasRemoteData = true;
+      console.log('Received valid remote data:', remotePageData);
+      socket.emit('confirmSync');
+    }
+  });
+
+  socket.on('fullySynced', (synced) => {
+    isFullySynced = synced;
+    console.log('Sync status:', synced ? 'SYNCED' : 'NOT SYNCED');
+  });
+
+  socket.on('peerDisconnected', () => {
+    hasRemoteData = false;
+    isFullySynced = false;
+    console.log('Peer disconnected, waiting for reconnection...');
+  });
+
+  socket.on('disconnect', () => {
+    isConnected = false;
+    hasRemoteData = false;
+    isFullySynced = false;
+    console.log('Disconnected from server');
+  });
+
+  socket.on('recibirPescado', (data) => {
+    let startX = (data.direction > 0) ? -50 : width + 50;
+
+    let fishColor = color(data.color[0], data.color[1], data.color[2]);
+
+    let _pescaoNuevo = new Pescado(
+      data.id,
+      startX,
+      data.y,
+      data.size,
+      fishColor,
+      data.speed,
+      data.direction
+    );
+    pescados.push(_pescaoNuevo);
+  });
+
+   for (let i = 0; i < 20; i++) {
+    let size = random(20, 60);
+    let pescadito = new Pescado(nextFishId++, random(width), random(height), size, color(0, random(50, 255), random(50, 120)), random(1, 3), random([1, -1]));
+    pescados.push(pescadito);
+  }
+}
+
+function isValidRemoteData(data) {
+  return (
+    data &&
+    typeof data.x === 'number' &&
+    typeof data.y === 'number' &&
+    typeof data.width === 'number' &&
+    data.width > 0 &&
+    typeof data.height === 'number' &&
+    data.height > 0
+  );
+}
+
+function checkWindowPosition() {
+  currentPageData = {
+    x: window.screenX,
+    y: window.screenY,
+    width: window.innerWidth,
+    height: window.innerHeight
+  };
+
+  if (
+    currentPageData.x !== previousPageData.x ||
+    currentPageData.y !== previousPageData.y ||
+    currentPageData.width !== previousPageData.width ||
+    currentPageData.height !== previousPageData.height
+  ) {
+    point1 = [currentPageData.width / 2, currentPageData.height / 2];
+    socket.emit('win2update', currentPageData, socket.id);
+    previousPageData = currentPageData;
+  }
+}
+
+
+function draw() {
+  background(0, 100, 200);
+
+  checkWindowPosition();
+
+  if (!isConnected) {
+    showStatus('Conectando al servidor...', color(255, 165, 0));
+    return;
+  }
+
+  if (!hasRemoteData) {
+    showStatus('Esperando conexión de la otra ventana...', color(255, 165, 0));
+    return;
+  }
+
+  if (!isFullySynced) {
+    showStatus('Sincronizando datos...', color(255, 165, 0));
+    return;
+  }
+
+  for (let pescadito of pescados) {
+  if (pescadito.checkHover(mouseX, mouseY)) {
+    pescadito.flipDirection();
+  }
+}
+
+  for (let pescadito of [...pescados]) {
+    pescadito.update();
+    pescadito.draw();
+
+    if (pescadito.IsOffScreen()) {
+      SendFishToOtherPage(pescadito);
+    }
+  }
+}
+
+function showStatus(message, statusColor) {
+  textSize(24);
+  textAlign(CENTER, CENTER);
+  noStroke();
+  fill(0, 0, 0, 150);
+  rectMode(CENTER);
+  let textW = textWidth(message) + 40;
+  let textH = 40;
+  rect(width / 2, height / 6, textW, textH, 10);
+  fill(statusColor);
+  text(message, width / 2, height / 6);
+}
+
+function windowResized() {
+  resizeCanvas(windowWidth, windowHeight);
+}
+
+function SendFishToOtherPage(pescadito) {
+  let y = (pescadito.y / currentPageData.height) * remotePageData.height;
+  let col = pescadito.color.levels;
+  socket.emit('sendPescado', {
+  id: pescadito.id,
+  y: y,
+  size: pescadito.size,
+  color: [col[0], col[1], col[2]],
+  speed: pescadito.speed,
+  direction: pescadito.direction
+});
+
+  pescados = pescados.filter((p) => p.id !== pescadito.id);
+}
+```
+
+**server**
+```
+const express = require('express');
+const http = require('http');
+const socketIO = require('socket.io');
+const path = require('path');
+const app = express();
+const server = http.createServer(app); 
+const io = socketIO(server); 
+const port = 3000;
+
+let page1 = { x: 0, y: 0, width: 100, height: 100 };
+let page2 = { x: 0, y: 0, width: 100, height: 100 };
+let connectedClients = new Map();
+let syncedClients = new Set();
+
+app.use(express.static(path.join(__dirname, 'views')));
+
+app.get('/page1', (req, res) => {
+    res.sendFile(path.join(__dirname, 'views', 'page1.html'));
+});
+
+app.get('/page2', (req, res) => {
+    res.sendFile(path.join(__dirname, 'views', 'page2.html'));
+});
+
+io.on('connection', (socket) => {
+    console.log('A user connected - ID:', socket.id);
+    connectedClients.set(socket.id, { page: null, synced: false });
+    
+    socket.on('disconnect', () => {
+        console.log('User disconnected - ID:', socket.id);
+        connectedClients.delete(socket.id);
+        syncedClients.delete(socket.id);
+        // Notificar a otros clientes que se perdió la sincronización
+        socket.broadcast.emit('peerDisconnected');
+    });
+
+    socket.on('win1update', (window1, sendid) => {
+        console.log('Received win1update from ID:', socket.id, 'Data:', window1);
+        if (isValidWindowData(window1)) {
+            page1 = window1;
+            connectedClients.set(socket.id, { page: 'page1', synced: false });
+            socket.broadcast.emit('getdata', { data: page1, from: 'page1' });
+            checkAndNotifySyncStatus();
+        }
+    });
+
+    socket.on('win2update', (window2, sendid) => {
+        console.log('Received win2update from ID:', socket.id, 'Data:', window2);
+        if (isValidWindowData(window2)) {
+            page2 = window2;
+            connectedClients.set(socket.id, { page: 'page2', synced: false });
+            socket.broadcast.emit('getdata', { data: page2, from: 'page2' });
+            checkAndNotifySyncStatus();
+        }
+    });
+
+    socket.on('requestSync', () => {
+        const clientInfo = connectedClients.get(socket.id);
+        if (clientInfo?.page === 'page1') {
+            socket.emit('getdata', { data: page2, from: 'page2' });
+        } else if (clientInfo?.page === 'page2') {
+            socket.emit('getdata', { data: page1, from: 'page1' });
+        }
+    });
+
+    socket.on('confirmSync', () => {
+        syncedClients.add(socket.id);
+        const clientInfo = connectedClients.get(socket.id);
+        if (clientInfo) {
+            connectedClients.set(socket.id, { ...clientInfo, synced: true });
+        }
+        checkAndNotifySyncStatus();
+    });    
+
+  socket.on('sendPescado', (fishData) => {
+
+    socket.broadcast.emit('recibirPescado', fishData);
+  });
+
+});
+
+function isValidWindowData(data) {
+    return data && 
+           typeof data.x === 'number' && 
+           typeof data.y === 'number' && 
+           typeof data.width === 'number' && data.width > 0 &&
+           typeof data.height === 'number' && data.height > 0;
+}
+
+function checkAndNotifySyncStatus() {
+    const page1Clients = Array.from(connectedClients.entries()).filter(([id, info]) => info.page === 'page1');
+    const page2Clients = Array.from(connectedClients.entries()).filter(([id, info]) => info.page === 'page2');
+    
+    const bothPagesConnected = page1Clients.length > 0 && page2Clients.length > 0;
+    const allClientsSynced = Array.from(connectedClients.keys()).every(id => syncedClients.has(id));
+    const hasMinimumClients = connectedClients.size >= 2;
+
+    console.log(`Debug - Connected clients: ${connectedClients.size}, Page1: ${page1Clients.length}, Page2: ${page2Clients.length}, Synced: ${syncedClients.size}`);
+
+    
+    if (bothPagesConnected && allClientsSynced && hasMinimumClients) {
+        io.emit('fullySynced', true);
+        console.log('All clients are fully synced');
+    } else {
+        io.emit('fullySynced', false);
+        console.log(`Sync status: pages=${bothPagesConnected}, synced=${allClientsSynced}, clients=${connectedClients.size}`);
+    }
+}
+
+
+
+server.listen(port, () => {
+    console.log(`Server is listening on http://localhost:${port}`);
+});
+```
