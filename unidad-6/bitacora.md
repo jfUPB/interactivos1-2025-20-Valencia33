@@ -886,3 +886,31 @@ server.listen(port, () => {
 
 <img width="1886" height="737" alt="image" src="https://github.com/user-attachments/assets/96835871-a21d-4ddf-8021-1e736603f8a2" />
 
+## EVIDENCIAS
+
+NOTA: 4.8
+
+- ACTIVIDAD 1 - **5/5**
+
+  - Realicé todo lo que proponía la unidad.
+  - [EVIDENCIA](#-Actividad-1)
+
+- ACTIVIDAD 2 - **5/5**
+
+  - Realicé todo lo que proponía la unidad, incluso aquellas preguntas que no eran obligatorias.
+  - 
+
+- ACTIVIDAD 3 - **5/5**
+
+  - Realicé todo lo que proponía la unidad, incluso aquellas preguntas que no eran obligatorias.
+  - 
+
+- ACTIVIDAD 4 - **4/5**
+
+  - Me faltaron dos experimentos pero fue pq ya quería hacer el apply. perdon :(
+  - 
+
+- ACTIVIDAD 5 - **5/5**
+
+  - Realicé todo lo que proponía la unidad, incluso aquellas preguntas que no eran obligatorias.
+  - 
