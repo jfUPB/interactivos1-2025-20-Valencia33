@@ -270,3 +270,19 @@ como su tamaño es máximo 60 entonces los voy a mandar a 70 pq no quiero q se v
 <img width="1286" height="856" alt="image" src="https://github.com/user-attachments/assets/3e2b7434-b005-4112-b4f7-faa98a3009cc" />
 
 maravilloso, no pasa nada, justo lo que quería.
+
+me equivoqué en el constructor, ya si spawnean PERO se dejan de mover despues de que destruye el primer (o eso creo).
+
+<img width="1297" height="860" alt="image" src="https://github.com/user-attachments/assets/d244a952-0f5d-4eec-8566-bb3857d73b41" />
+
+encontré un error a la hora de mandar y recibir cositas pero me sigue dando error AHHHHHHHHHHHHHHHHHHHHHHHHHHH
+
+<img width="1284" height="855" alt="image" src="https://github.com/user-attachments/assets/a383bb8e-5676-4bc1-a15a-ce441253b199" />
+
+mas o menos solucionado, pasa UN solo pescado.
+
+<img width="1284" height="859" alt="image" src="https://github.com/user-attachments/assets/5f2b151e-aa1c-4492-88da-ae6a9cc25095" />
+
+FUNCIONA (puse una coma donde no debía)
+
+<img width="1290" height="864" alt="image" src="https://github.com/user-attachments/assets/f1fbe0c9-853b-4e88-a60f-c075e9231cc6" />
