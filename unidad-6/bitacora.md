@@ -5,6 +5,8 @@ ___
 
 ## Actividad 1
 
+<a name="actividad1"></a>
+
 **PASOS**
 
   - copiar la URL del repo para clonarlo.
@@ -893,8 +895,8 @@ NOTA: 4.8
 - ACTIVIDAD 1 - **5/5**
 
   - Realicé todo lo que proponía la unidad.
-  - [EVIDENCIA](#-actividad-1)
-
+  - [EVIDENCIA](#actividad-1)
+    
 - ACTIVIDAD 2 - **5/5**
 
   - Realicé todo lo que proponía la unidad, incluso aquellas preguntas que no eran obligatorias.
@@ -914,4 +916,5 @@ NOTA: 4.8
 
   - Realicé todo lo que proponía la unidad, incluso aquellas preguntas que no eran obligatorias.
   - 
+
 
