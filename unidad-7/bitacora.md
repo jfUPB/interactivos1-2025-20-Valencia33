@@ -46,3 +46,24 @@
 
     -  <img width="1036" height="934" alt="image" src="https://github.com/user-attachments/assets/1b0ba905-f787-40b2-83f0-3d1835462092" />
 
+## Actividad 3
+
+- **1.) ¿Cuál es la función principal de express.static(‘public’) en este servidor? ¿Cómo se compara con el uso de app.get(‘/ruta’, …) del servidor de la Unidad 6?**
+
+  - eso lo que está haciendo es que está buscando los archivos que están en esa carpeta public del proyecto y está creando una instancia estática pues el servidor solo va a sacar la infor de lo que está ahí. y es diferente del get en el sentido en que el get no crea la instancia estática de los archivos.
+
+- **2.) Explica detalladamente el flujo de un mensaje táctil: ¿Qué evento lo envía desde el móvil? ¿Qué evento lo recibe el servidor? ¿Qué hace el servidor con él? ¿Qué evento lo envía el servidor al escritorio? ¿Por qué se usa socket.broadcast.emit en lugar de io.emit o socket.emit en este caso?**
+
+  - <img width="590" height="388" alt="image" src="https://github.com/user-attachments/assets/349e7b5a-395e-4e72-8b85-c172eebb01c9" />
+
+  - <img width="426" height="222" alt="image" src="https://github.com/user-attachments/assets/c286ac9d-4811-4c76-aa2f-f326be0b58cf" />
+
+  - <img width="338" height="153" alt="image" src="https://github.com/user-attachments/assets/8f0afd03-9484-4944-88c8-2e35acca7c2d" />
+
+  - la difernecia es que sockect.emit se lo manda a TODOS los clientes conectados, y socket.broadcast.emit se lo manda también a todos EXCEPTO a la conexión más reciente, lo que sea que signifique eso.
+
+- **3.) Si conectaras dos computadores de escritorio y un móvil a este servidor, y movieras el dedo en el móvil, ¿Quién recibiría el mensaje retransmitido por el servidor? ¿Por qué?**
+
+  - pues realmente todo depende de a que URL estén conectados, pero entendiendo la definición de socket.broadcast.emit, eso significa que solo le mandaría la info del celular  
+
+- **4.) ¿Qué información útil te proporcionan los mensajes console.log en el servidor durante la ejecución?**
