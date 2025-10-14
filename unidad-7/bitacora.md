@@ -67,3 +67,11 @@
   - pues realmente todo depende de a que URL estén conectados, pero entendiendo la definición de socket.broadcast.emit, eso significa que solo le mandaría la info del celular  
 
 - **4.) ¿Qué información útil te proporcionan los mensajes console.log en el servidor durante la ejecución?**
+
+  - <img width="583" height="461" alt="image" src="https://github.com/user-attachments/assets/bb92ea00-4d50-4d6e-bb7f-03faa140d5f1" />
+
+## Actividad 4
+
+**Realiza un diagrama donde muestres el flujo completo de datos y eventos entre los tres componentes: móvil, servidor y escritorio. Puedes ilustrar con un ejemplo de coordenadas táctiles (x, y) y cómo viajan a través del sistema.**
+
+<img width="576" height="743" alt="image" src="https://github.com/user-attachments/assets/a707f53f-2aff-4eb0-ba3f-18dba53ecf68" />
