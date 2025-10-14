@@ -75,3 +75,11 @@
 **Realiza un diagrama donde muestres el flujo completo de datos y eventos entre los tres componentes: móvil, servidor y escritorio. Puedes ilustrar con un ejemplo de coordenadas táctiles (x, y) y cómo viajan a través del sistema.**
 
 <img width="576" height="743" alt="image" src="https://github.com/user-attachments/assets/a707f53f-2aff-4eb0-ba3f-18dba53ecf68" />
+
+## Actividad 5
+
+me gustan los pescados y bob esponja entonces voy a hacer ocean man de ween y lo quiero hacer como con un enjambre de pescados que cambie de color, forma, velocidad y pues que se desorganicen de vez en cuando con el coro, ahí vemos.
+
+antes que todo y primero que nada, piratear la canción y cargarla.
+
+En la unidad pasada hice lo de crear una clase que tuviera un update y un draw y llamar esos metodos propios por cada instancia de la clase, y me pareció muy facil de implementar entonces eso es lo que voy a hacer de nuevo. Entonces como me lo imagino es que se vea como una cantidad infinita de pescados pero en realidad cuando salen del frame cambia su posición a una relativa en la esquina opuesta, ahora, en cuanto a interacción, quiero que vayan hacía donde mi dedo apunte, lo que tengo en mente es 
