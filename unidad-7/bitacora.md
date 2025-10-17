@@ -78,7 +78,7 @@
 
 ## Actividad 5
 
-me gustan los pescados y bob esponja entonces voy a hacer ocean man de ween y lo quiero hacer como con un enjambre de pescados que cambie de color, forma, velocidad y pues que se desorganicen de vez en cuando con el coro, ahí vemos.
+me gustan los pescados y el videito de yellow submarine entonces voy a hacer algo con esa estética, lo quiero hacer como con un enjambre de pescados que cambie de color, forma, velocidad y pues que se desorganicen de vez en cuando con el coro, ahí vemos.
 
 antes que todo y primero que nada, piratear la canción y cargarla.
 
@@ -98,5 +98,374 @@ entonces para eso diría que hay que añadir dos metodos adicionales en el pesca
 
 <img width="714" height="319" alt="image" src="https://github.com/user-attachments/assets/346827b4-c841-44dd-acc8-da280cb7813a" />
 
+## desktop
+
+```js
+let fishes = [];
+let numFish = 80;
+let fft, song;
+let audioStarted = false;
+
+let rays = [];
+let socket;
+let targetDir = null;
+let lastTouchTime = 0;
+
+let yellowShiftActive = false;
+let yellowShiftStart = 0;
+let yellowShiftDuration = 2000;
+
+let colorShiftActive = false;
+let colorShiftStart = 0;
+let colorShiftDuration = 2000;
+let hueOffset = 0;
+
+let nextAutoShift = 0;
+let autoShiftInterval = 25000;
+
+function preload() {
+  soundFormats('mp3', 'ogg');
+  song = loadSound('Yellow Submarine.mp3');
+}
+
+function setup() {
+  createCanvas(windowWidth, windowHeight);
+  angleMode(DEGREES);
+  colorMode(RGB);
+
+  for (let i = 0; i < numFish; i++) {
+    fishes.push(new Fish(random(width), random(height)));
+  }
+
+  let numRays = 30;
+  for (let i = 0; i < numRays; i++) {
+    let spacing = width / numRays;
+    rays.push({
+      x: i * spacing,
+      width: random(25, 45),
+      offset: random(TWO_PI)
+    });
+  }
+
+  fft = new p5.FFT();
+
+  nextAutoShift = millis() + autoShiftInterval;
+
+  socket = io();
+  socket.on('connect', () => console.log('Connected to server'));
+
+  socket.on('message', (data) => {
+  if (data.type === 'touch') {
+    lastTouchTime = millis();
+    targetDir = createVector(data.x - width / 2, data.y - height / 2).normalize();
+  } else if (data.type === 'yellowShift') {
+    yellowShiftActive = true;
+    yellowShiftStart = millis();
+  }
+});
+
+  socket.on('disconnect', () => console.log('Disconnected'));
+}
+
+function draw() {
+
+  push();
+  translate(0, sin(frameCount * 0.01) * 15);
+
+
+  drawGradientBackground();
+  drawLightRays();
+
+  if (!audioStarted) {
+    drawStartScreen();
+    return;
+  }
+
+  if (millis() - lastTouchTime > 500) targetDir = null;
+
+  let spectrum = fft.analyze();
+  let bass = fft.getEnergy('bass');
+  let mid = fft.getEnergy('mid');
+  let treble = fft.getEnergy('treble');
+
+if (millis() > nextAutoShift) {
+  colorShiftActive = true;
+  colorShiftStart = millis();
+  nextAutoShift = millis() + autoShiftInterval;
+}
+
+if (colorShiftActive) {
+  let elapsed = millis() - colorShiftStart;
+  let progress = constrain(elapsed / colorShiftDuration, 0, 1);
+  hueOffset = lerp(0, 180, progress);
+  if (progress >= 1) colorShiftActive = false;
+} else {
+  hueOffset = 0;
+}
+
+if (bass > 220 && !colorShiftActive) { 
+  colorShiftActive = true;
+  colorShiftStart = millis();
+}
+
+  for (let f of fishes) {
+    f.reactToMusic(bass, mid, treble);
+    f.updateBehavior(targetDir, bass);
+    f.update();
+    f.display();
+  }
+
+  pop();
+
+}
+
+function drawStartScreen() {
+  fill(255);
+  textAlign(CENTER, CENTER);
+  textSize(32);
+  text('PRESIONA PARA EMPEZAR', width / 2, height / 2);
+}
+
+function mousePressed() {
+  if (!audioStarted) {
+    userStartAudio();
+    song.loop();
+    audioStarted = true;
+  }
+}
+
+function touchStarted() {
+  lastTouchTime = millis();
+  if (!audioStarted) {
+    userStartAudio();
+    song.loop();
+    audioStarted = true;
+  } else if (touches.length > 0) {
+    let t = touches[0];
+    targetDir = createVector(t.x - width / 2, t.y - height / 2).normalize();
+  }
+  return false;
+}
+
+function touchMoved() {
+  lastTouchTime = millis();
+  if (touches.length > 0) {
+    let t = touches[0];
+    targetDir = createVector(t.x - width / 2, t.y - height / 2).normalize();
+  }
+  return false;
+}
+
+function touchEnded() {
+  targetDir = null;
+}
+
+
+class Fish {
+  constructor(x, y) {
+    this.pos = createVector(x, y);
+    this.vel = p5.Vector.random2D();
+    this.baseSpeed = random(1.2, 2.5);
+    this.speed = this.baseSpeed;
+    this.size = random(10, 25);
+    this.angle = random(360);
+    this.wanderTheta = random(TWO_PI);
+    this.baseHue = random(0, 360);
+    this.color = color(200, 200, 255);
+  }
+
+  updateBehavior(targetDir, bass) {
+    if (targetDir) {
+      let dir = targetDir.copy();
+      this.vel = p5.Vector.lerp(this.vel, dir.mult(this.speed + map(bass, 0, 255, 2, 8)), 0.1);
+    } else {
+      this.wanderTheta += random(-0.25, 0.25);
+      let wanderDir = p5.Vector.fromAngle(this.wanderTheta);
+      this.vel = p5.Vector.lerp(this.vel, wanderDir.mult(this.speed), 0.05);
+    }
+  }
+
+  reactToMusic(bass, mid, treble) {
+  this.size = map(bass, 0, 255, 10, 90);
+  this.speed = this.baseSpeed + map(bass, 0, 255, 0, 8);
+
+  colorMode(HSB);
+
+  let baseHue = (this.baseHue + map(mid, 0, 255, -40, 40)) % 360;
+  let baseSat = map(mid, 0, 255, 20, 80);
+  let baseBright = map(treble, 0, 255, 70, 100);
+
+  let hueValue = baseHue;
+  let satValue = baseSat;
+  let brightValue = baseBright;
+
+  if (yellowShiftActive) {
+    let elapsed = millis() - yellowShiftStart;
+    let progress = constrain(elapsed / yellowShiftDuration, 0, 1);
+    if (progress < 1) {
+      let yellowHue = 55;
+      let yellowSat = 90;
+      let yellowBright = 100;
+
+      hueValue = lerp(baseHue, yellowHue, progress);
+      satValue = lerp(baseSat, yellowSat, progress);
+      brightValue = lerp(baseBright, yellowBright, progress);
+    } else {
+      let backProgress = constrain((elapsed - yellowShiftDuration) / yellowShiftDuration, 0, 1);
+
+      hueValue = lerp(55, baseHue, backProgress);
+      satValue = lerp(90, baseSat, backProgress);
+      brightValue = lerp(100, baseBright, backProgress);
+
+      if (backProgress >= 1) yellowShiftActive = false;
+    }
+  }
+
+  this.color = color(hueValue, satValue, brightValue);
+  colorMode(RGB);
+}
+
+
+  update() {
+    this.pos.add(this.vel);
+    this.angle = degrees(this.vel.heading());
+
+    if (this.pos.x < -this.size) this.pos.x = width + this.size;
+    if (this.pos.x > width + this.size) this.pos.x = -this.size;
+    if (this.pos.y < -this.size) this.pos.y = height + this.size;
+    if (this.pos.y > height + this.size) this.pos.y = -this.size;
+  }
+
+  display() {
+    push();
+    translate(this.pos.x, this.pos.y);
+    rotate(this.angle);
+
+    colorMode(HSB);
+    let glow = color(hue(this.color), saturation(this.color), brightness(this.color), 0.1);
+    fill(glow);
+    noStroke();
+    ellipse(0, 0, this.size * 2, this.size * 1.2);
+
+    fill(this.color);
+    noStroke();
+
+    ellipse(0, 0, this.size * 1.8, this.size);
+    triangle(
+      -this.size * 0.9, 0,
+      -this.size * 1.5, this.size * 0.5,
+      -this.size * 1.5, -this.size * 0.5
+    );
+
+    fill(255);
+    ellipse(this.size * 0.5, 0, this.size * 0.4);
+    fill(0);
+    ellipse(this.size * 0.5, 0, this.size * 0.15);
+
+    colorMode(RGB);
+    pop();
+  }
+}
+
+function drawGradientBackground() {
+  noFill();
+  for (let y = 0; y <= height; y++) {
+    let inter = map(y, 0, height, 0, 1);
+    let c1 = color(90, 190, 255);
+    let c2 = color(0, 25, 70);
+    let c = lerpColor(c1, c2, inter);
+    stroke(c);
+    line(0, y, width, y);
+  }
+}
+
+function drawLightRays() {
+  if (!audioStarted) return;
+
+  let low = fft.getEnergy('bass');
+  let mid = fft.getEnergy('mid');
+  let high = fft.getEnergy('treble');
+
+  push();
+  blendMode(ADD);
+  noStroke();
+
+  let globalSway = sin(frameCount * 0.008) * 40;
+  let raySpacing = width / rays.length;
+
+  for (let i = 0; i < rays.length; i++) {
+    let r = rays[i];
+
+    let t = i / (rays.length - 1);
+    let energy = lerp(low, high, t) * 0.6 + mid * 0.4;
+
+    let len = map(energy, 0, 255, height * 0.4, height * 1.1);
+    let w = r.width;
+    let baseAlpha = map(energy, 0, 255, 15, 45);
+
+    let sway = sin(frameCount * 0.01 + r.offset) * 15 + globalSway * 0.3;
+    let x = i * raySpacing + sway;
+
+    for (let yy = 0; yy < len; yy += 8) {
+      let inter = map(yy, 0, len, 1, 0);
+      let beamAlpha = inter * baseAlpha;
+      fill(180, 225, 255, beamAlpha);
+      rect(x, yy, w, 8);
+    }
+  }
+
+  blendMode(BLEND);
+  pop();
+}
+```
+## mobile
+
+```js
+let socket;
+let lastTouchX = null;
+let lastTouchY = null;
+
+function setup() {
+  createCanvas(windowWidth, windowHeight);
+  background(0);
+  socket = io();
+
+  socket.on('connect', () => console.log('Connected to server'));
+}
+
+function draw() {
+  background(70, 80, 255);
+  fill(90, 190, 255);
+  textAlign(CENTER, CENTER);
+  textSize(20);
+  text('MANTENER PRESIONADO PARA MOVER LOS PESCADOS\n PRESIONAR PARA VOLVERLOS AMARILLOS', width / 2, height / 2);
+}
+
+function touchStarted() {
+  if (socket && socket.connected) {
+    socket.emit('message', { type: 'yellowShift' });
+    let t = touches[0];
+    socket.emit('message', { type: 'touch', x: t.x, y: t.y });
+  }
+  return false;
+}
+
+function touchMoved() {
+  if (socket && socket.connected && touches.length > 0) {
+    let t = touches[0];
+    socket.emit('message', { type: 'touch', x: t.x, y: t.y });
+  }
+  return false;
+}
+
+function touchEnded() {
+  if (socket && socket.connected) {
+    socket.emit('message', { type: 'touchEnd' });
+  }
+  return false;
+}
+```
+
 # EVIDENCIAS
+
 
