@@ -82,4 +82,21 @@ me gustan los pescados y bob esponja entonces voy a hacer ocean man de ween y lo
 
 antes que todo y primero que nada, piratear la canción y cargarla.
 
-En la unidad pasada hice lo de crear una clase que tuviera un update y un draw y llamar esos metodos propios por cada instancia de la clase, y me pareció muy facil de implementar entonces eso es lo que voy a hacer de nuevo. Entonces como me lo imagino es que se vea como una cantidad infinita de pescados pero en realidad cuando salen del frame cambia su posición a una relativa en la esquina opuesta, ahora, en cuanto a interacción, quiero que vayan hacía donde mi dedo apunte, lo que tengo en mente es 
+En la unidad pasada hice lo de crear una clase que tuviera un update y un draw y llamar esos metodos propios por cada instancia de la clase, y me pareció muy facil de implementar entonces eso es lo que voy a hacer de nuevo. Entonces como me lo imagino es que se vea como una cantidad infinita de pescados pero en realidad cuando salen del frame cambia su posición a una relativa en la esquina opuesta, ahora, en cuanto a interacción, quiero que vayan hacía donde mi dedo apunte.
+
+Para empezar lo importante es crear la clase de pescado, donde tengo pensado definir cosas basicas como su apariencia y comportamiento, como su reaccion a la musica, su update y su draw.
+
+Para la parte de velocidad, tamñano y color sean manejadas por los bajos, para que se vea como que están pegando saltitos, los medios y altos aún no se pero se me ocurre que pueden mover la velocidad y saturación del color.
+
+en cuanto a interactividad tengo pensado que la perosna pueda definir la dirección en la que se mueven los pescados, lo pienso como un cardumen de pescados y como elegí yellow submarine entonces que se vuelvan amarillos cuando se toque la pantalla.
+
+en ese caso necesito varias cosas desde el cliente mobile saber cuando termina y empieza un toque Y cuadno hay un toque, de esta forma podrá saber cuando volver al comportamiento nomral y cuando ir en una dirección.
+
+entonces para eso diría que hay que añadir dos metodos adicionales en el pescado para que: 1. reaccione a la múscia, 2. cambie su comportamiento. PERO eso no es problema mio, solo necesito definir como va a ser la comunicación entre clientes y servidor.
+
+<img width="526" height="470" alt="image" src="https://github.com/user-attachments/assets/e608064d-f784-462d-ad37-4657be7b9538" />
+
+<img width="714" height="319" alt="image" src="https://github.com/user-attachments/assets/346827b4-c841-44dd-acc8-da280cb7813a" />
+
+# EVIDENCIAS
+
